@@ -1,0 +1,52 @@
+pipeline {
+    agent any
+
+    triggers {
+        githubPush()
+    }
+
+    stages {
+
+        stage('Check Tools') {
+            steps {
+                sh 'chmod +x scripts/check_tools.sh'
+                sh './scripts/check_tools.sh'
+            }
+        }
+
+        stage('Build App') {
+            steps {
+                sh './scripts/build.sh'
+            }
+        }
+
+        stage('Docker Build & Push') {
+            steps {
+                sh './scripts/docker.sh'
+            }
+        }
+
+        stage('Terraform Apply') {
+            steps {
+                sh './scripts/terraform.sh'
+            }
+        }
+
+        stage('Kubernetes Deploy') {
+            steps {
+                sh './scripts/deploy.sh'
+            }
+        }
+    }
+
+    post {
+        failure {
+            echo "Pipeline failed! Running cleanup..."
+            sh 'chmod +x scripts/cleanup.sh'
+            sh './scripts/cleanup.sh'
+        }
+        success {
+            echo "Pipeline executed successfully 🚀"
+        }
+    }
+}
