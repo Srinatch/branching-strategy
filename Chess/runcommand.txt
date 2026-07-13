@@ -1,0 +1,6 @@
+
+./scripts/setup.sh
+./scripts/pipeline.sh
+./scripts/cleanup.sh
+
+terraform destroy

@@ -1,0 +1,105 @@
+
+sudo apt update
+sudo apt install nginx -y
+sudo mkdir /var/www/html/nginx
+sudo mv /var/www/html/index.nginx-debian.html /var/www/html/nginx
+
+sudo apt update
+sudo apt install apache2 -y
+sudo mkdir /var/www/html/apache2
+sudo mv /var/www/html/index.html /var/www/html/apache2
+
+
+sudo rm -r /var/www/html/apache2
+
+
+sudo apt install -y openjdk-17-jdk
+java -version
+sudo apt install -y maven
+mvn -version
+
+
+
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+export MAVEN_HOME=/usr/share/maven
+export PATH=$PATH:$JAVA_HOME/bin:$MAVEN_HOME/bin
+export CLASSPATH=.:$JAVA_HOME/lib
+
+
+
+
+cd /opt
+sudo wget https://archive.apache.org/dist/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz
+sudo tar -xzf apache-maven-3.9.6-bin.tar.gz
+sudo mv apache-maven-3.9.6 maven
+
+
+cd /opt
+curl -O https://dlcdn.apache.org/maven/maven-3/3.9.5/binaries/apache-maven-3.9.5-bin.tar.gz
+# Extract to /opt
+sudo tar -xvzf apache-maven-3.9.5-bin.tar.gz -C /opt
+# Create symbolic link
+sudo ln -s /opt/apache-maven-3.9.5 /opt/maven
+
+
+#load balancer
+sudo apt update
+sudo apt install apache2 -y
+sudo apt install stress -y
+sudo mkdir /var/www/html/apache2
+sudo mv /var/www/html/index.html /var/www/html/apache2
+sudo rm /var/www/html/apache2/index.html
+sudo vi /var/www/html/apache2
+
+for jenkinks commands
+-----------------------------------------
+sudo systemctl status Jenkins
+
+ps aux | grep jenkins | grep -v grep
+sudo ss -tulnp | grep 9091
+
+
+sudo ls /var/lib/jenkins/secrets
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+
+
+systemctl status jenkins --no-pager
+ss -tulnp | grep 9091
+LISTEN 0 4096 0.0.0.0:9091 ... java
+sudo ufw status
+sudo ufw allow 9091
+sudo ufw reload
+sudo grep -E "HTTP_PORT|HTTP_LISTEN_ADDRESS" /etc/default/jenkins
+
+sudo systemctl edit Jenkins
+ExecStart=
+ExecStart=/usr/bin/java -Djava.awt.headless=true -jar /usr/share/java/jenkins.war --webroot=/var/cache/jenkins/war --httpPort=9091 --httpListe>
+
+sudo systemctl restart jenkins	
+sudo ls /var/lib/jenkins/secrets
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+
+cat /etc/os-release
+
+sudo tail -50 /var/log/jenkins/jenkins.log
+sudo -u jenkins java -jar /usr/share/java/jenkins.war --httpPort=9091
+
+
+removing old script and reupload commands
+----------------------------------------------
+sudo rm -f /tmp/jenkins_install.sh
+exit
+
+🧹 If Jenkins ever starts on 8080 again
+----------------------------------------------
+sudo systemctl cat jenkins
+
+
+<!DOCTYPE html>
+<html>
+<body style="background-color:powderblue;">
+<h1>Welcome to Load Balancing</h1>
+<p>This is for learning</p>
+</body>
+</html> 
+

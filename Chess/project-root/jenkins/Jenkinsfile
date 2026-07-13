@@ -1,0 +1,85 @@
+pipeline {
+    agent any
+
+    triggers {
+        githubPush()
+    }
+
+    options {
+        timeout(time: 30, unit: 'MINUTES')
+        timestamps()
+    }
+
+    environment {
+        APP_ENV = 'dev'
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Setup Permissions') {
+            steps {
+                sh 'chmod +x scripts/*.sh'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh './scripts/build.sh'
+            }
+        }
+
+        stage('Docker Build & Push') {
+            steps {
+                sh './scripts/docker.sh'
+            }
+        }
+
+        stage('Update Config') {
+            steps {
+                sh './scripts/update_config.sh'
+            }
+        }
+
+        stage('Terraform Apply') {
+            steps {
+                sh './scripts/terraform.sh'
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                sh './scripts/k8s.sh'
+            }
+        }
+
+        stage('Verify Deployment') {
+            steps {
+                sh '''
+                kubectl get pods -n $NAMESPACE
+                kubectl get svc -n $NAMESPACE
+                '''
+            }
+        }
+    }
+
+    post {
+        success {
+            echo '✅ Deployment Successful!'
+        }
+
+        failure {
+            echo '❌ Deployment Failed! Cleaning up...'
+            sh './scripts/cleanup.sh'
+        }
+
+        always {
+            echo 'Pipeline execution completed.'
+        }
+    }
+}

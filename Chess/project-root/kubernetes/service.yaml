@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: chess-service
+  namespace: chess
+
+spec:
+  type: LoadBalancer   # Works in cloud
+
+  selector:
+    app: chess
+
+  ports:
+    - port: 9091
+      targetPort: 9091
+      nodePort: 30007   # ✅ fallback for Minikube

@@ -1,0 +1,8 @@
+.git
+.gitignore
+secrets/
+scripts/
+terraform/
+kubernetes/
+*.env
+__pycache__/

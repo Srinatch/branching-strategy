@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Chess</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/chessboard.min.css"/>
+
+</head>
+
+<body>
+
+<h2>♟️ Chess Game</h2>
+<div id="board"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/chessboard.min.js"></script>
+
+<script>
+var game = new Chess();
+
+var board = Chessboard('board', {
+    draggable: true,
+    position: 'start',
+
+    onDrop: function (source, target) {
+        var move = game.move({
+            from: source,
+            to: target,
+            promotion: 'q'
+        });
+
+        if (move === null) return 'snapback';
+
+        highlight(source, target);
+    }
+});
+
+// Highlight moves safely
+function highlight(from, to){
+    document.querySelectorAll('[class*="square-"]').forEach(s => s.style.background = '');
+
+    var fromEl = document.querySelector('[data-square="'+from+'"]');
+    var toEl = document.querySelector('[data-square="'+to+'"]');
+
+    if (fromEl) fromEl.style.background = 'yellow';
+    if (toEl) toEl.style.background = 'green';
+}
+</script>
+
+</body>
+</html>
