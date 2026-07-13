@@ -1,0 +1,25 @@
+pipeline {
+    agent {label 'MAVEN'}
+    option {
+        timeout(time: 30, unit: 'MINUTES')
+		}
+		trigger {
+		pollSCM('* * * * *')
+		}
+    stages {
+        stage('git') {
+            steps {
+                git url: 'https://github.com/vhazarathnaidu/git-branching-stratey.git'
+				branch: 'feature-ep-005-task-004'
+            }
+        }
+        stage('build') { 
+            steps {
+            dir 'mvn clean package'
+				archiveArtifacts artifacts: '**/spring-petclinic-*.jar'
+				junit testResults: '**/TEST-*.xml'
+            }
+           
+        }
+    }
+}
