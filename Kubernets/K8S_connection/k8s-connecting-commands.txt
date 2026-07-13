@@ -1,0 +1,104 @@
+K8S Connecting Commands
+---------------------------
+
+Disable swap (required by Kubernetes)
+------------------------------------------------------
+sudo swapoff -a
+sudo sed -i '/ swap / s/^/#/' /etc/fstab
+free -h
+
+Load required kernel modules
+--------------------------------------------------------
+
+cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
+overlay
+br_netfilter
+EOF
+
+sudo modprobe overlay
+sudo modprobe br_netfilter
+
+Set required sysctl parameters
+--------------------------------------------------------
+
+cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+net.bridge.bridge-nf-call-iptables=1
+net.bridge.bridge-nf-call-ip6tables=1
+net.ipv4.ip_forward=1
+EOF
+
+sudo sysctl --system
+
+Install containerd (CRI runtime)
+---------------------------------------------------------
+
+sudo apt update
+sudo apt install -y containerd
+sudo mkdir -p /etc/containerd
+containerd config default | sudo tee /etc/containerd/config.toml
+sudo systemctl restart containerd
+sudo systemctl enable containerd
+
+Install Kubernetes dependencies
+--------------------------------------------------------------
+
+sudo apt install -y apt-transport-https ca-certificates curl
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
+STEP 6: Install kubeadm, kubelet, kubectl
+-----------------------------------------------------------------
+sudo apt update
+sudo apt install -y kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl
+
+Initialize Kubernetes control plane
+-----------------------------------------------------------------
+
+sudo kubeadm init --pod-network-cidr=192.168.0.0/16
+
+Configure kubectl for normal user
+-----------------------------------------------------------------
+mkdir -p $HOME/.kube
+sudo cp /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+Install networking tools (for troubleshooting)
+------------------------------------------------------------------
+sudo apt install -y net-tools
+
+Verify Kubernetes services
+------------------------------------------------------------------
+sudo systemctl status kubelet
+ls -l /etc/kubernetes/manifests/
+sudo apt install -y cri-tools
+sudo crictl ps | grep kube
+
+Verify API Server is listening
+--------------------------------------------------------------------
+sudo netstat -ntlp | grep 6443
+or (modern replacement)
+sudo ss -ntlp | grep 6443
+
+(ONLY if cluster is broken) Full reset & re-init
+--------------------------------------------------------------------
+Run this only if kubeadm init failed
+
+sudo kubeadm reset -f
+sudo rm -rf ~/.kube
+sudo systemctl restart containerd
+sudo systemctl restart kubelet
+sudo kubeadm init --pod-network-cidr=192.168.0.0/16
+
+
+
+if pod showing pending status
+--------------------------------------------------------------------
+kubectl describe node ip-10-10-6-253 | grep -i taint
+
+kubectl taint nodes --all node-role.kubernetes.io/control-plane-
+kubectl get pods -o wide
+
+kubectl exec -it nginx-pod -- curl localhost
+

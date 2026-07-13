@@ -1,0 +1,29 @@
+# Maven build directory
+target/
+
+# Compiled class files
+*.class
+
+# Log files
+*.log
+
+# Temporary files
+*.tmp
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+
+# Maven wrapper logs
+.mvn/wrapper/maven-wrapper.jar
+
+# Jenkins workspace files
+workspace/
+
+# Environment variables
+.env

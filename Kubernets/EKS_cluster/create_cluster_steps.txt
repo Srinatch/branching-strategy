@@ -1,0 +1,168 @@
+Prerequisites
+---------------------------------------------------------
+Before creating an EKS cluster, ensure you have:
+
+AWS Account
+IAM Administrator access
+Existing VPC with:
+Public Subnets (2)
+Private Subnets (2)
+Internet Gateway
+IAM Role for EKS Cluster
+IAM Role for Worker Nodes
+
+Step 1: Create IAM Role for EKS Cluster
+------------------------------------------------
+Sign in to the AWS Management Console.
+Go to IAM.
+Click Roles.
+Click Create role.
+Trusted entity type → AWS Service.
+Use case → EKS.
+Select EKS - Cluster.
+Click Next.
+
+Attach the policy: AmazonEKSClusterPolicy
+Name the role: EKSClusterRole
+Click Create Role.
+
+Step 2: Create IAM Role for Worker Nodes
+--------------------------------------------
+Go to IAM → Roles → Create Role.
+
+Trusted Entity:
+-------------------
+AWS Service
+
+Use Case:
+EC2
+
+Attach the following policies:
+--------------------------------
+AmazonEKSWorkerNodePolicy
+AmazonEC2ContainerRegistryPullOnly
+AmazonEKS_CNI_Policy
+
+Role Name:
+----------
+EKSNodeRole
+
+Click Create Role.
+
+Step 3: Create the EKS Cluster
+---------------------------------
+Open Amazon EKS.
+Click Clusters.
+Click Create Cluster.
+Select Custom Configuration (or Quick Configuration if appropriate).
+Cluster Details
+
+Cluster Name: my-eks-cluster
+
+Kubernetes Version: 1.33 
+
+Cluster Service Role: EKSClusterRole
+
+Click Next.
+
+Networking
+Choose: 
+VPC
+Two Public Subnets
+Two Private Subnets
+
+Security Group:
+Create a new security group or select an existing one.
+
+Cluster Endpoint Access: Public and Private
+
+Click Next.
+
+Enable the logs you need:
+
+API
+Audit
+Authenticator
+Controller Manager
+Scheduler
+
+Click Next.
+
+Add-ons
+
+Install the recommended add-ons:
+
+Amazon VPC CNI
+CoreDNS
+kube-proxy
+Amazon EBS CSI Driver (optional but recommended)
+
+Click Next.
+
+Review
+
+Review the configuration.
+
+Click Create.
+
+The control plane typically takes 10–15 minutes to become active.
+
+Step 4: Create a Managed Node Group
+--------------------------------------
+Once the cluster status is Active:
+Open the cluster.
+Select Compute.
+Click Add Node Group.
+Node Group Details
+
+Node Group Name: worker-nodes
+
+Node IAM Role: EKSNodeRole
+
+Click Next.
+
+Compute Configuration
+
+AMI Type: Amazon Linux 2023
+
+Capacity Type: On-Demand
+
+Instance Type: t3.medium
+
+Disk Size: 20 GB
+
+Desired Size: 2
+
+Minimum: 2
+
+Maximum: 4
+
+Click Next.
+
+Networking
+
+Select the private subnets for the node group.
+
+Click Next.
+
+Review
+
+Click Create.
+
+The node group usually becomes ready within 5–10 minutes.
+
+Step 5: Verify the Cluster
+----------------------------------------
+After the node group status is Active:
+
+Cluster Status: Active
+Node Group Status: Active
+
+You can then connect to the cluster using the AWS CLI:
+---------------------------------------------------------
+aws eks update-kubeconfig --region <your-region> --name my-eks-cluster
+
+Verify the nodes:
+-----------------------
+--------------------
+kubectl get nodes

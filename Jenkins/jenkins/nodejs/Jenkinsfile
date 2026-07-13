@@ -1,0 +1,96 @@
+pipeline {
+    agent any
+
+    triggers {
+        pollSCM('H/2 * * * *')   // Poll every 2 minutes
+    }
+
+    options {
+        retry(2)
+        timeout(time: 10, unit: 'MINUTES')
+        disableConcurrentBuilds()
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+    }
+
+    environment {
+        NODE_ENV = 'development'
+        BRANCH_NAME = 'feature-ep2-task-1'   // change if needed
+        REPO_URL = 'https://github.com/awsdevopssri/Future.git'
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                git branch: "${BRANCH_NAME}", url: "${REPO_URL}"
+            }
+        }
+
+        stage('Check Node.js') {
+            steps {
+                dir('nodejs') {
+                bat '''
+                echo Checking Node.js...
+                node --version
+                IF %ERRORLEVEL% NEQ 0 (
+                    echo Node.js not found! Please install Node.js and add to PATH
+                    exit /b 1
+                )
+
+                npm --version
+                '''
+                }
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                bat '''
+                IF exist package.json (
+                    echo Installing dependencies...
+                    npm install
+                ) ELSE (
+                    echo No package.json found → Skipping install
+                )
+                '''
+            }
+        }
+
+        stage('Run Application') {
+            steps {
+                bat '''
+                IF exist app.js (
+                    node app.js
+                ) ELSE (
+                    echo No app.js found
+                )
+                '''
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                bat '''
+                IF exist package.json (
+                    echo Running tests...
+                    npm test
+                ) ELSE (
+                    echo No tests configured
+                )
+                '''
+            }
+        }
+    }
+
+    post {
+        success {
+            echo '✅ Node.js Build SUCCESS'
+        }
+        failure {
+            echo '❌ Node.js Build FAILED'
+        }
+        always {
+            echo '📦 Cleanup complete'
+        }
+    }
+}

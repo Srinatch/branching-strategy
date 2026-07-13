@@ -1,0 +1,101 @@
+pipeline {
+
+    agent any
+
+    triggers {
+        githubPush()
+        pollSCM('H/2 * * * *')
+    }
+
+    options {
+        timestamps()
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                git branch: 'feature-ep2-task-1',
+                    url: 'https://github.com/awsdevopssri/Future.git'
+            }
+        }
+
+        stage('Check Python') {
+            steps {
+                dir('python') {
+                    bat '''
+                    echo Checking Python...
+                    where python
+                    python --version
+                    '''
+                }
+            }
+        }
+
+        stage('Setup Environment') {
+            steps {
+                dir('python') {
+                    bat '''
+                    echo Trying venv...
+
+                    python -m venv venv
+                    IF %ERRORLEVEL% NEQ 0 (
+                        echo venv not supported, continuing...
+                        exit /b 0
+                    )
+
+                    IF EXIST venv (
+                        echo Using virtual environment
+                        call venv\\Scripts\\activate
+                        python -m pip install --upgrade pip
+                        IF EXIST requirements.txt (
+                            pip install -r requirements.txt
+                        ) ELSE (
+                            echo No requirements.txt
+                        )
+                    ) ELSE (
+                        echo Using system Python
+                    )
+                    '''
+                }
+            }
+        }
+
+        stage('Run Application') {
+            steps {
+                dir('python') {
+                    bat '''
+                    IF EXIST app.py (
+                        python app.py
+                    ) ELSE (
+                        echo No app.py found
+                    )
+                    '''
+                }
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                dir('python') {
+                    bat '''
+                    IF EXIST test.py (
+                        python test.py
+                    ) ELSE (
+                        echo No tests found
+                    )
+                    '''
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "✅ PYTHON BUILD SUCCESS"
+        }
+        failure {
+            echo "❌ PYTHON BUILD FAILED"
+        }
+    }
+}

@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Values.name}}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector: 
+    matchLabels: 
+      name: {{ .Values.name }}
+  strategy: {{- toYaml .Values.strategy | nindent 4 }}
+  template: {{- toYaml .Values.template | nindent 4 }}
+    spec:
+      containers: {{ .Values.container | toYaml | nindent 8 }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          ports: {{ .Values.port | toYaml | nindent 12 }}
+          resources: {{- toYaml .Values.resources | nindent 12 }}
+          livenessProbe: {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe: {{- toYaml .Values.readinessProbe | nindent 12 }}

@@ -1,0 +1,312 @@
+What is Kubernetes?
+---------------------------------------------------------------
+Kubernetes (K8s) is a container orchestration platform that automates:
+
+Deployment
+Scaling
+Networking
+Load balancing
+Self-healing
+Rolling updates
+
+Originally developed by Google and now maintained by Cloud Native Computing Foundation.
+
+Kubernetes Architecture (High Level)
+
+A) Control Plane (Master Node)
+---------------------------------------------------
+🔹 API Server
+Entry point for all commands (kubectl)
+Validates and processes requests
+
+🔹 etcd
+Key-value database
+Stores cluster state
+
+🔹 Scheduler
+Decides which node runs the Pod
+
+🔹 Controller Manager
+Maintains desired state
+Handles replicas, node health, endpoints
+
+B) Worker Node Components
+------------------------------------------------
+🔹 Kubelet
+Communicates with API server
+Ensures containers run properly
+
+🔹 Container Runtime
+Runs containers (containerd / CRI-O)
+
+🔹 Kube-proxy
+Handles networking & service routing
+
+Kubernetes Core Objects (Important for Notes)
+-----------------------------------------------------------
+Object	                               Purpose
+----------------------------------------------------------------
+Pod 								Smallest deployable unit
+ReplicaSet							Maintains pod replicas
+Deployment							Manages ReplicaSets
+Service								Exposes Pods
+ConfigMap							Non-sensitive configs
+Secret								Sensitive data
+Namespace							Logical isolation
+Ingress								HTTP routing
+StatefulSet							Stateful apps
+DaemonSet							One pod per node
+Job/CronJob							Batch workloads
+
+Kubernetes End-to-End Application Flow
+----------------------------------------------------------------------
+Step 1 Developer Stage
+--------------------------------------
+Developer writes application code
+Creates Dockerfile
+
+Builds Docker image
+
+----> docker build -t myapp:v1 .
+
+Pushes image to registry
+----> docker push myapp:v1
+
+# CI/CD Pipeline
+----------------------------------------
+Jenkins/GitLab triggers pipeline
+Build → Test → Scan → Push image
+Update Kubernetes manifest file
+
+# Deployment YAML Creation
+-----------------------------------------
+
+Example:
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp
+spec:
+  replicas: 3
+  template:
+    spec:
+      containers:
+      - name: myapp
+        image: myapp:v1
+
+# Apply Manifest
+--------------------------------------
+
+kubectl apply -f deployment.yaml
+
+# What Happens Internally?
+----------------------------------------
+
+kubectl sends request to API Server
+
+API Server validates request
+
+State stored in etcd
+
+Deployment controller creates ReplicaSet
+
+ReplicaSet creates Pods
+
+Scheduler assigns Pods to nodes
+
+Kubelet pulls image
+
+Container runtime starts container
+
+# Service Creation
+-----------------------------
+kind: Service
+type: ClusterIP
+
+
+Service provides:
+
+Stable IP
+
+Load balancing
+
+Service discovery (DNS)
+
+#  External Access
+------------------------
+
+If public access needed:
+
+NodePort
+
+LoadBalancer
+
+Ingress Controller
+
+##  Scaling
+------------------------------------
+Manual:
+
+kubectl scale deployment myapp --replicas=5
+
+
+Auto scaling:
+
+HPA (Horizontal Pod Autoscaler)
+
+Based on CPU/Memory metrics
+
+##  Rolling Update
+-------------------------
+kubectl set image deployment/myapp myapp=myapp:v2
+
+
+Kubernetes:
+
+Creates new pods
+
+Gradually terminates old pods
+
+Zero downtime
+
+Rollback:
+
+kubectl rollout undo deployment myapp
+
+##  Self-Healing
+----------------------------------
+
+If:
+
+Pod crashes
+
+Node fails
+
+Container stops
+
+Kubernetes automatically:
+
+Recreates pod
+
+Reschedules to healthy node
+
+##  Networking Flow (Important)
+------------------------------------------------
+
+Pod → Service → kube-proxy → iptables/IPVS → Destination Pod
+
+Internal communication via:
+
+http://service-name
+
+##  Stateful Application Flow
+-----------------------------------------
+
+For DB:
+
+Use StatefulSet
+
+Persistent Volume (PV)
+
+Persistent Volume Claim (PVC)
+
+Storage Types:
+
+NFS
+
+EBS
+
+Azure Disk
+
+Local storage
+
+##  Config & Secrets Handling
+------------------------------------------
+ConfigMap:
+
+Application configs
+
+Secret:
+
+Passwords
+
+API keys
+
+Certificates
+
+##  Real-Time Production Architecture
+--------------------------------------------
+Client
+↓
+Load Balancer
+↓
+Ingress
+↓
+Service
+↓
+Pods
+↓
+Database (StatefulSet + PVC)
+
+##  Kubernetes Monitoring & Logging
+----------------------------------------------
+Monitoring:
+
+Prometheus
+
+Grafana
+
+Logging:
+
+ELK Stack
+
+## Security
+-----------------------------------------
+RBAC
+
+Network Policies
+
+Pod Security
+
+Secrets encryption
+
+Service Accounts
+
+##  Disaster Recovery
+--------------------------------------------
+Important:
+
+etcd backup
+
+Persistent volume backup
+
+Multi-node cluster
+
+Multi-zone deployment
+
+## Complete Kubernetes Lifecycle Summary
+------------------------------------------------------
+Code commit
+
+Build Docker image
+
+Push to registry
+
+Create Deployment YAML
+
+Apply to cluster
+
+Scheduler assigns pods
+
+Service exposes pods
+
+Scaling & rolling updates
+
+Monitoring
+
+Backup & recovery
+
+## Final One-Line Summary
+-----------------------------------------------
+Kubernetes maintains the desired state of containerized applications by automating deployment, scaling, networking, self-healing, and updates across cluster nodes.

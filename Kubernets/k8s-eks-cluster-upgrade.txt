@@ -1,0 +1,135 @@
+#!/bin/bash
+set -e
+
+
+# Variables
+
+REGION="us-east-1"
+CLUSTER_NAME="dev-cluster"
+NODEGROUP_NAME="worker-nodes"
+K8S_CREATE_VERSION="1.34"
+K8S_UPGRADE_VERSION="1.35"
+INSTANCE_TYPE="t3.medium"
+NODE_COUNT=2
+KEY_NAME="my-key"
+
+echo "==========="
+echo "Creating EKS Cluster"
+echo "==========="
+
+cat > cluster.yaml <<EOF
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: ${CLUSTER_NAME}
+  region: ${REGION}
+  version: "${K8S_CREATE_VERSION}"
+
+managedNodeGroups:
+  - name: ${NODEGROUP_NAME}
+    instanceType: ${INSTANCE_TYPE}
+    desiredCapacity: ${NODE_COUNT}
+    minSize: 2
+    maxSize: 4
+    volumeSize: 20
+
+    ssh:
+      allow: true
+      publicKeyName: ${KEY_NAME}
+EOF
+
+eksctl create cluster -f cluster.yaml
+
+echo "Cluster Created Successfully"
+
+echo "Connecting kubectl"
+
+aws eks update-kubeconfig \
+--region ${REGION} \
+--name ${CLUSTER_NAME}
+
+kubectl get nodes
+
+echo "==========="
+echo "Current Version"
+echo "==========="
+
+aws eks describe-cluster \
+--name ${CLUSTER_NAME} \
+--query cluster.version \
+--output text
+
+echo "==========="
+echo "Upgrading Control Plane to ${K8S_UPGRADE_VERSION}"
+echo "==========="
+
+aws eks update-cluster-version \
+--region ${REGION} \
+--name ${CLUSTER_NAME} \
+--kubernetes-version ${K8S_UPGRADE_VERSION}
+
+echo "Waiting for Control Plane Upgrade..."
+
+while true
+do
+VERSION=$(aws eks describe-cluster \
+--region ${REGION} \
+--name ${CLUSTER_NAME} \
+--query cluster.version \
+--output text)
+
+echo "Current Version : ${VERSION}"
+
+if [ "${VERSION}" = "${K8S_UPGRADE_VERSION}" ]
+then
+    break
+fi
+
+sleep 30
+done
+
+echo "==========="
+echo "Upgrading Managed Node Group"
+echo "==========="
+
+aws eks update-nodegroup-version \
+--cluster-name ${CLUSTER_NAME} \
+--nodegroup-name ${NODEGROUP_NAME}
+
+echo "==========="
+echo "Updating Addons"
+echo "==========="
+
+aws eks update-addon \
+--cluster-name ${CLUSTER_NAME} \
+--addon-name vpc-cni \
+--resolve-conflicts OVERWRITE
+
+aws eks update-addon \
+--cluster-name ${CLUSTER_NAME} \
+--addon-name coredns \
+--resolve-conflicts OVERWRITE
+
+aws eks update-addon \
+--cluster-name ${CLUSTER_NAME} \
+--addon-name kube-proxy \
+--resolve-conflicts OVERWRITE
+
+echo ""
+echo "==========="
+echo "Verification"
+echo "==========="
+
+kubectl get nodes
+
+kubectl get pods -A
+
+aws eks describe-cluster \
+--name ${CLUSTER_NAME} \
+--query cluster.version \
+--output text
+
+echo "==========="
+echo "EKS Cluster Upgrade Completed Successfully"
+echo "==========="

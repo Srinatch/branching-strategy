@@ -1,0 +1,35 @@
+
+helm commands
+--------------------------
+
+chmod +x install k8s.sh
+./install k8s
+
+helm version
+
+work commands
+-------------------------------
+
+kubectl get nodes
+
+helm create nginx
+cd nginx
+cd templates
+vi deployment.yaml
+vi values.yaml
+
+helm template nginx-new .
+
+helm install nginx-new .
+
+kubectl get pods
+
+kubectl get deployments
+
+kubectl get pods -w
+
+kubectl port-forward deployment/web1-deployment 8080:80
+
+helm upgrade nginx-new .
+
+helm uninstall nginx-new

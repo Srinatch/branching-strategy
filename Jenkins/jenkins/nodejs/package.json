@@ -1,0 +1,8 @@
+{
+  "name": "jenkins-node-pipeline",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "node test/test_app.js"
+  }
+}
