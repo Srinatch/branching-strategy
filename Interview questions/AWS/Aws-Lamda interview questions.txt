@@ -1,0 +1,426 @@
+AWS Lambda – Complete Interview Questions and Answers
+-----------------------------------------------------
+1. What is AWS Lambda?
+-----------------------------------------------------
+Amazon Web Services Lambda is a serverless compute service that runs code without provisioning or managing servers. 
+You upload your code, and Lambda automatically scales and executes it in response to events.
+Benefits
+Serverless
+Automatic scaling
+Pay only for usage
+High availability
+Supports multiple languages
+
+2. What is Serverless Computing?
+-----------------------------------------------------
+Serverless computing allows developers to run applications without managing infrastructure.
+
+AWS manages:
+Servers
+Scaling
+Availability
+Patching
+
+3. Which Languages Does Lambda Support?
+-----------------------------------------------------
+Python
+Node.js
+Java
+C#
+Go
+Ruby
+Custom Runtime
+
+4. What Are the Components of Lambda?
+-----------------------------------------------------
+Function
+Event Source
+Trigger
+Execution Role
+Environment Variables
+Layers
+
+5. What is a Lambda Function?
+-----------------------------------------------------
+A Lambda function is a piece of code executed in response to events.
+
+Example:
+def lambda_handler(event, context):
+    return "Hello AWS"
+	
+6. What Are Lambda Triggers?
+-----------------------------------------------------
+Services that invoke Lambda automatically.
+
+Examples:
+S3
+API Gateway
+DynamoDB
+EventBridge
+SNS
+SQS
+CloudWatch
+
+7. Explain Event-Driven Architecture
+-----------------------------------------------------
+S3 Upload
+    ↓
+Lambda
+    ↓
+Process File
+    ↓
+Store Results
+
+Lambda executes when an event occurs.
+
+8. What is the Lambda Handler?
+-----------------------------------------------------
+The handler is the entry point for a Lambda function.
+
+Python:
+def lambda_handler(event, context):
+    pass
+	
+9. What are Event and Context Objects?
+-----------------------------------------------------
+Event
+Contains input data.
+
+Context
+Provides runtime information.
+
+Examples:
+Request ID
+Remaining execution time
+Function name
+
+10. What is Stateless Execution?
+-----------------------------------------------------
+Lambda does not retain state between invocations.
+
+State should be stored externally:
+DynamoDB
+S3
+RDS
+
+11. How Does Lambda Scale?
+-----------------------------------------------------
+Lambda automatically creates multiple instances to handle concurrent requests.
+
+12. What is Concurrency?
+-----------------------------------------------------
+Number of simultaneous Lambda executions.
+
+13. Reserved Concurrency vs Provisioned Concurrency
+-----------------------------------------------------
+Reserved Concurrency			Provisioned Concurrency
+Limits executions				Eliminates cold starts
+Controls capacity				Keeps environments warm
+
+14. What is a Cold Start?
+-----------------------------------------------------
+Time required to initialize a new Lambda execution environment.
+
+Factors:
+Runtime
+Package size
+VPC configuration
+
+15. How Can Cold Starts Be Reduced?
+-----------------------------------------------------
+Provisioned concurrency
+Smaller deployment packages
+Lightweight runtimes
+
+16. Deployment Package Types
+-----------------------------------------------------
+ZIP Package
+Upload code directly.
+Container Image
+Deploy using Docker images.
+Maximum image size:
+10 GB
+
+17. Maximum Deployment Package Size
+-----------------------------------------------------
+ZIP upload: 50 MB
+
+ZIP through S3: 250 MB
+
+18. What are Lambda Layers?
+-----------------------------------------------------
+Layers contain reusable code and libraries shared among functions.
+
+Benefits:
+Code reuse
+Smaller packages
+Easier maintenance
+
+19. How is Lambda Secured?
+-----------------------------------------------------
+Using:
+IAM roles
+Resource policies
+Environment variable encryption
+VPC
+
+20. Why Use IAM Roles Instead of Access Keys?
+-----------------------------------------------------
+IAM roles provide:
+Temporary credentials
+Better security
+Automatic rotation
+
+21. Can Lambda Access S3?
+-----------------------------------------------------
+Yes.
+By attaching an IAM role with S3 permissions.
+
+22. What are Environment Variables?
+-----------------------------------------------------
+Configuration values used by Lambda.
+
+Example:
+DB_HOST=mydatabase
+DB_PORT=3306
+
+23. Can Environment Variables Be Encrypted?
+-----------------------------------------------------
+Yes.
+Using KMS.
+
+24. Can Lambda Run Inside a VPC?
+-----------------------------------------------------
+Yes.
+Used to access:
+RDS
+ElastiCache
+Internal applications
+
+25. Drawback of VPC Lambda?
+-----------------------------------------------------
+Cold starts may increase.
+
+26. How Do You Monitor Lambda?
+-----------------------------------------------------
+Using:
+CloudWatch Logs
+CloudWatch Metrics
+X-Ray
+
+27. Important Lambda Metrics
+-----------------------------------------------------
+Invocations
+Errors
+Duration
+Throttles
+Concurrent Executions
+
+28. Where Are Lambda Logs Stored?
+-----------------------------------------------------
+CloudWatch Logs.
+
+29. What is AWS X-Ray?
+-----------------------------------------------------
+Distributed tracing service for debugging applications.
+
+30. Synchronous vs Asynchronous Invocation
+-----------------------------------------------------
+Synchronous				Asynchronous
+Waits for response		Doesn't wait
+API Gateway				S3, SNS
+
+31. Lambda with S3
+-----------------------------------------------------
+Example:
+Image Upload
+      ↓
+S3 Event
+      ↓
+Lambda
+      ↓
+Resize Image
+
+32. Lambda with API Gateway
+-----------------------------------------------------
+User Request
+      ↓
+API Gateway
+      ↓
+Lambda
+      ↓
+Response
+
+Used for serverless APIs.
+
+33. Lambda with SQS
+-----------------------------------------------------
+Messages are processed automatically from queues.
+
+34. Lambda with DynamoDB Streams
+-----------------------------------------------------
+Triggered when table data changes.
+
+35. What Happens If Lambda Fails?
+-----------------------------------------------------
+Retries depend on source:
+Asynchronous sources:
+Two retries
+SQS:
+Message visibility timeout
+
+36. What is a Dead Letter Queue (DLQ)?
+-----------------------------------------------------
+Stores failed events.
+Supported services:
+SQS
+SNS
+
+37. What is Destination Configuration?
+-----------------------------------------------------
+Routes success or failure events.
+
+Targets:
+SQS
+SNS
+EventBridge
+Lambda
+
+38. Memory and CPU Relationship
+-----------------------------------------------------
+Increasing memory also increases CPU power.
+
+39. Maximum Lambda Timeout
+-----------------------------------------------------
+15 minutes
+
+40. Ephemeral Storage Limit
+-----------------------------------------------------
+Default: 512 MB
+
+Maximum: 10 GB
+
+41. What are Lambda Versions?
+-----------------------------------------------------
+Immutable snapshots of functions.
+
+42. What are Aliases?
+-----------------------------------------------------
+Pointers to versions.
+
+Examples:
+DEV
+TEST
+PROD
+
+43. Benefits of Aliases
+-----------------------------------------------------
+Blue/Green deployments
+Canary releases
+
+44. What is Provisioned Concurrency?
+-----------------------------------------------------
+Pre-initializes execution environments to avoid cold starts.
+
+45. What is SnapStart?
+-----------------------------------------------------
+Feature for Java functions that reduces startup time.
+
+46. What is Lambda@Edge?
+-----------------------------------------------------
+Runs Lambda functions at CloudFront edge locations.
+
+Use cases:
+Content customization
+Authentication
+Header manipulation
+
+47. Can Docker Images Be Used?
+-----------------------------------------------------
+Yes.
+
+Container images up to:
+10 GB
+
+48. Lambda Timing Out. What Will You Check?
+-----------------------------------------------------
+Function timeout
+Memory allocation
+External dependencies
+Network latency
+
+49. Access Denied Error. Why?
+-----------------------------------------------------
+Possible reasons:
+Missing IAM role permissions
+Resource policy restrictions
+
+50. Logs Missing. Why?
+-----------------------------------------------------
+Check:
+Execution role permissions
+CloudWatch Logs configuration
+
+51. Explain Image Processing Architecture
+-----------------------------------------------------
+User Upload
+     ↓
+S3 Bucket
+     ↓
+Lambda
+     ↓
+Resize Image
+     ↓
+Store Output in S3
+
+52. Explain API Serverless Architecture
+-----------------------------------------------------
+User
+ ↓
+API Gateway
+ ↓
+Lambda
+ ↓
+DynamoDB
+
+53. Explain Your Lambda Project
+-----------------------------------------------------
+Example Answer:
+"We built a serverless application using API Gateway, Lambda, and DynamoDB. CloudWatch monitored function performance, 
+and IAM roles controlled permissions. Lambda functions processed S3 uploads and generated thumbnails."
+
+54. How Do You Secure Lambda?
+-----------------------------------------------------
+IAM roles
+KMS encryption
+VPC integration
+Least privilege access
+
+Frequently Asked Rapid-Fire Questions
+-----------------------------------------------------
+Maximum Timeout
+15 minutes
+
+Default Ephemeral Storage
+512 MB
+
+Maximum Ephemeral Storage
+10 GB
+
+Logs Stored In
+CloudWatch Logs
+
+Tracing Service
+AWS X-Ray
+
+Reusable Libraries Feature
+Lambda Layers
+
+Concurrency Metric
+ConcurrentExecutions
+
+Cold Start Elimination Feature
+Provisioned Concurrency
+
+Failed Event Storage
+Dead Letter Queue

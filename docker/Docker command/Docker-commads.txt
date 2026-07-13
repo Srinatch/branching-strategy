@@ -1,0 +1,172 @@
+------------------------------------------------------------------------
+Docker Container Commands
+------------------------------------------------------------------------
+
+mkdir                         → Create folder
+docker --version              → Check Docker installed version
+docker info                   → View Docker system information
+docker login                  → Login to Docker registry
+docker pull nginx             → Download image from registry
+docker images                 → List local Docker images
+docker rmi nginx              → Remove Docker image
+docker build -t app:1.0 .     → Build image from Dockerfile
+docker tag app:1.0 repo/app   → Tag image for push
+docker push repo/app          → Push image to registry
+
+docker run nginx              → Create & start a container
+docker run -d nginx           → Run container in background
+docker run -it ubuntu bash    → Run container interactively
+docker run --rm nginx         → Auto-remove container after stop
+docker run -p 8080:80 nginx   → Port mapping host→container
+docker run -v /h:/c nginx     → Mount volume
+docker run -e ENV=prod nginx  → Pass environment variable
+docker run --name web nginx   → Assign container name
+
+docker ps                     → List running containers
+docker ps -a                  → List all containers
+docker stop web               → Stop running container
+docker start web              → Start stopped container
+docker restart web            → Restart container
+docker rm web                 → Remove container
+docker exec -it web bash      → Access running container shell
+docker logs web               → View container logs
+docker inspect web            → Detailed container info
+
+docker network ls             → List Docker networks
+docker volume ls              → List Docker volumes
+docker system df              → Show Docker disk usage
+docker system prune           → Cleanup unused resources
+
+docker compose up -d          → Start multi-container app
+docker compose down           → Stop & remove compose stack
+
+docker run --restart always   → auto-restart container on failure
+docker run --cpus=1 --memory=512m  → limit CPU and memory usage
+docker run --entrypoint bash  → override container entrypoint
+docker rm -f myapp            → force remove running container
+docker logs -f myapp          → stream container logs in real time
+docker stats                  → show live CPU & memory usage of containers
+docker top myapp              → show running processes inside container
+
+-----------------------------------------------------------------
+Dockerfile
+-----------------------------------------------------------------
+
+FROM        → Defines the base image for the Docker image
+RUN         → Executes commands at build time to install software or configure image
+COPY        → Copies files from host to image
+ADD         → Copies files with extra features like URL extract (rarely used)
+WORKDIR     → Sets working directory inside the container
+ENV         → Sets environment variables inside the image
+ARG         → Defines build-time variables
+EXPOSE      → Documents which port the container listens on
+CMD         → Defines default command to run when container starts
+ENTRYPOINT  → Sets main executable that always runs in container
+LABEL       → Adds metadata to the image
+USER        → Specifies the user to run container as
+VOLUME      → Creates mount point for external storage
+ONBUILD     → Triggers instruction when image is used as base
+SHELL       → Changes default shell used by RUN
+STOPSIGNAL  → Defines signal to stop container gracefully
+HEALTHCHECK → Checks container health status
+MAINTAINER  → (Deprecated) Specifies image author
+
+---------------------------------------------------------------------
+Docker file Example
+---------------------------------------------------------------------
+
+Java
+-----------------------------------
+
+# Build stage
+FROM maven:3.9.6-eclipse-temurin-17 AS build
+WORKDIR /app
+COPY pom.xml .
+RUN mvn dependency:go-offline
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+# Runtime stage
+FROM eclipse-temurin:17-jre-alpine
+WORKDIR /app
+COPY --from=build /app/target/app.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java","-jar","app.jar"]
+
+Nginx
+------------------------------------
+
+FROM nginx:alpine
+COPY dist/ /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx","-g","daemon off;"]
+
+Kubernetes microservice
+--------------------------------------
+
+FROM alpine:3.19
+RUN addgroup -S app && adduser -S app -G app
+WORKDIR /app
+COPY app-binary .
+RUN chmod +x app-binary
+USER app
+EXPOSE 8080
+ENTRYPOINT ["./app-binary"]
+
+Jenkins
+---------------------------------------
+
+FROM jenkins/inbound-agent:latest
+USER root
+RUN apt-get update && apt-get install -y docker.io
+USER jenkins
+
+
+Python
+----------------------------------------
+
+FROM python:3.11-slim
+WORKDIR /app
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
+EXPOSE 8000
+CMD ["gunicorn","-b","0.0.0.0:8000","app:app"]
+
+Node.js
+---------------------------------------------
+
+FROM node:20-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY . .
+EXPOSE 3000
+USER node
+CMD ["node","server.js"]
+
+JAVA, JENKINS, DOCKER, GIT
+-------------------------------------------
+
+FROM jenkins/jenkins:lts
+ENV JAVA_OPTS="-Djenkins.install.runSetupWizard=false"
+USER root
+RUN apt-get update && \
+    apt-get install -y \
+        openjdk-21-jre \
+        docker.io \
+        git \
+        curl \
+        sudo \
+    && rm -rf /var/lib/apt/lists/*
+
+ENV JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+ENV PATH=$JAVA_HOME/bin:$PATH
+USER jenkins
+EXPOSE 8080
+CMD ["jenkins.sh"]
+
+
+

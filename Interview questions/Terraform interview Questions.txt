@@ -1,0 +1,632 @@
+Terraform Interview Questions and Answers
+-----------------------------------------------
+What is Terraform?
+-----------------------------------------------
+Terraform is an Infrastructure as Code (IaC) tool developed by HashiCorp that allows you to define, 
+provision, and manage cloud and on-premises infrastructure using configuration files.
+Key Features
+Infrastructure as Code (IaC)
+Multi-cloud support
+Declarative language (HCL)
+State management
+Resource dependency management
+Reusable modules
+
+1. What is Infrastructure as Code (IaC)?
+-----------------------------------------------
+Infrastructure as Code is the process of managing and provisioning infrastructure through code instead of manual configuration.
+
+Benefits
+Automation
+Version Control
+Consistency
+Faster deployments
+Reduced human errors
+
+2. Why Terraform?
+-----------------------------------------------
+Advantages
+Open source
+Cloud agnostic
+Declarative syntax
+Reusable modules
+Infrastructure automation
+
+3. What is HCL?
+-----------------------------------------------
+HCL stands for:
+HashiCorp Configuration Language
+It is the language used to write Terraform configurations.
+Example:
+resource "aws_instance" "web" {
+  ami           = "ami-123456"
+  instance_type = "t2.micro"
+}
+
+4. What is a Terraform Provider?
+-----------------------------------------------
+Providers are plugins that allow Terraform to interact with APIs of cloud platforms and services.
+Examples:
+AWS
+Azure
+GCP
+Kubernetes
+GitHub
+
+Example:
+provider "aws" {
+  region = "us-east-1"
+}
+
+5. What is a Resource?
+-----------------------------------------------
+A resource is any infrastructure object managed by Terraform.
+
+Examples:
+EC2 Instance
+S3 Bucket
+VPC
+Security Group
+
+Example:
+resource "aws_s3_bucket" "demo" {
+  bucket = "demo-bucket"
+}
+
+6. Explain Terraform Workflow
+-----------------------------------------------
+Write Code
+    ↓
+terraform init
+    ↓
+terraform plan
+    ↓
+terraform apply
+    ↓
+Infrastructure Created
+
+7. What Does terraform init Do?
+-----------------------------------------------
+terraform init
+
+Functions:
+Downloads providers
+Initializes backend
+Prepares working directory
+
+8. What Does terraform plan Do?
+-----------------------------------------------
+terraform plan
+Shows:
+Resources to create
+Resources to modify
+Resources to delete
+No actual changes are made.
+
+9. What Does terraform apply Do?
+-----------------------------------------------
+terraform apply
+Creates or updates infrastructure according to configuration files.
+
+10. What Does terraform destroy Do?
+-----------------------------------------------
+terraform destroy
+Deletes all managed infrastructure resources.
+
+11. What is Terraform State?
+-----------------------------------------------
+Terraform stores infrastructure information in a state file.
+Default file:
+terraform.tfstate
+
+12. Why is State Important?
+-----------------------------------------------
+Terraform uses state to:
+Track resources
+Detect changes
+Manage dependencies
+Improve performance
+
+13. What Problems Occur if State is Lost?
+-----------------------------------------------
+Resource tracking lost
+Duplicate resources
+Drift issues
+Difficult updates
+
+14. What is Remote State?
+-----------------------------------------------
+Remote state stores Terraform state in a shared location.
+
+Examples:
+AWS S3
+Azure Storage
+GCS
+Terraform Cloud
+
+15. Why Use Remote State?
+-----------------------------------------------
+Team collaboration
+State locking
+Backup
+Security
+
+16. What is a Backend?
+-----------------------------------------------
+A backend determines where Terraform stores state.
+
+Example:
+terraform {
+  backend "s3" {
+    bucket = "terraform-state"
+    key    = "prod.tfstate"
+    region = "us-east-1"
+  }
+}
+
+17. What is State Locking?
+-----------------------------------------------
+Prevents multiple users from modifying the same state simultaneously.
+
+Example:
+S3 + DynamoDB
+Terraform Cloud
+
+18. Why is State Locking Important?
+-----------------------------------------------
+Avoids:
+Corruption
+Concurrent updates
+Resource conflicts
+
+19. What are Variables?
+-----------------------------------------------
+Variables allow dynamic configuration.
+
+Example:
+variable "instance_type" {
+  default = "t2.micro"
+}
+
+20. Variable Types
+-----------------------------------------------
+string
+number
+bool
+list
+map
+object
+
+Example:
+variable "environment" {
+  type = string
+}
+
+21. How to Pass Variables?
+-----------------------------------------------
+CLI
+terraform apply -var="env=dev"
+tfvars file
+env = "dev"
+
+22. What are Output Variables?
+-----------------------------------------------
+Outputs expose values after deployment.
+
+Example:
+output "instance_ip" {
+  value = aws_instance.web.public_ip
+}
+
+23. What is a Module?
+-----------------------------------------------
+A module is a reusable Terraform configuration.
+
+Benefits:
+Reusability
+Standardization
+Easier maintenance
+
+24. Types of Modules
+-----------------------------------------------
+Root Module
+Main configuration.
+Child Module
+Reusable submodule.
+
+25. Module Example
+-----------------------------------------------
+module "vpc" {
+  source = "./modules/vpc"
+}
+
+26. Benefits of Modules
+-----------------------------------------------
+Reusable code
+Reduced duplication
+Easier maintenance
+
+27. How Terraform Handles Dependencies?
+-----------------------------------------------
+Automatically using resource references.
+
+Example:
+resource "aws_instance" "web" {
+  subnet_id = aws_subnet.demo.id
+}
+
+28. What is Explicit Dependency?
+-----------------------------------------------
+Using:
+depends_on
+
+Example:
+depends_on = [aws_vpc.main]
+
+29. What is a Data Source?
+-----------------------------------------------
+Reads existing infrastructure information.
+
+Example:
+data "aws_ami" "latest" {
+  most_recent = true
+}
+
+30. Difference Between Resource and Data Source
+-----------------------------------------------
+Resource				Data Source
+Creates resource		Reads existing resource
+Managed by Terraform	Not managed
+
+31. What is a Provisioner?
+-----------------------------------------------
+Provisioners execute scripts on resources.
+Examples:
+local-exec
+remote-exec
+
+32. Example of local-exec
+-----------------------------------------------
+provisioner "local-exec" {
+  command = "echo Hello"
+}
+33. Why Avoid Provisioners?
+Not idempotent
+Hard to manage
+Last resort solution
+
+34. What is a Workspace?
+-----------------------------------------------
+Workspaces manage multiple environments using the same code.
+
+Examples:
+dev
+test
+prod
+
+35. Create Workspace
+-----------------------------------------------
+terraform workspace new dev
+
+36. List Workspaces
+-----------------------------------------------
+terraform workspace list
+
+37. What are Terraform Functions?
+-----------------------------------------------
+Built-in functions used to manipulate values.
+
+Examples:
+upper()
+lower()
+length()
+concat()
+lookup()
+
+38. Example Function
+-----------------------------------------------
+length(["a","b","c"])
+Output:
+3
+
+39. What is Terraform Cloud?
+-----------------------------------------------
+Terraform Cloud provides:
+Remote state storage
+Collaboration
+Policy enforcement
+Automation
+
+40. Benefits of Terraform Cloud
+-----------------------------------------------
+Team collaboration
+State locking
+Secure execution
+
+41. What is Terraform Drift?
+-----------------------------------------------
+Occurs when infrastructure changes outside Terraform.
+Example:
+Manual AWS console changes.
+
+42. How to Detect Drift?
+-----------------------------------------------
+terraform plan
+
+43. What is Taint?
+-----------------------------------------------
+Marks a resource for recreation.
+terraform taint aws_instance.web
+
+44. What is Untaint?
+-----------------------------------------------
+terraform untaint aws_instance.web
+Removes taint status.
+
+45. What is Import?
+-----------------------------------------------
+Imports existing resources into Terraform state.
+terraform import aws_instance.web i-123456
+
+46. What is Refresh?
+-----------------------------------------------
+Updates state from real infrastructure.
+terraform refresh
+
+47. What is terraform fmt?
+-----------------------------------------------
+Formats Terraform code.
+terraform fmt
+
+48. What is terraform validate?
+-----------------------------------------------
+Validates configuration syntax.
+terraform validate
+
+49. What is terraform graph?
+-----------------------------------------------
+Creates dependency graph.
+terraform graph
+
+50. What is terraform output?
+-----------------------------------------------
+Displays output variables.
+terraform output
+
+51. Create EC2 Example
+-----------------------------------------------
+resource "aws_instance" "web" {
+  ami           = "ami-123456"
+  instance_type = "t2.micro"
+}
+
+52. Create S3 Bucket Example
+-----------------------------------------------
+resource "aws_s3_bucket" "bucket" {
+  bucket = "demo-bucket"
+}
+
+53. Create Security Group Example
+-----------------------------------------------
+resource "aws_security_group" "web" {
+  name = "web-sg"
+}
+Terraform and Kubernetes
+
+54. Terraform vs Kubernetes
+-----------------------------------------------
+Terraform					Kubernetes
+Provision infrastructure	Manage containers
+Creates clusters			Runs workloads
+
+55. Terraform and Kubernetes Together
+-----------------------------------------------
+Terraform
+    ↓
+Creates EKS Cluster
+    ↓
+Kubernetes
+    ↓
+Deploys Applications
+
+56. Terraform vs Ansible
+-----------------------------------------------
+Terraform							Ansible
+Infrastructure provisioning			Configuration management
+Declarative							Procedural
+
+57. Terraform vs CloudFormation
+-----------------------------------------------
+Terraform			CloudFormation
+Multi-cloud			AWS only
+HCL					JSON/YAML
+
+58. Terraform vs ARM Templates
+-----------------------------------------------
+Terraform				ARM
+Multi-cloud				Azure only
+
+59. Terraform in CI/CD Pipeline
+-----------------------------------------------
+Git
+ ↓
+Jenkins
+ ↓
+Terraform Init
+ ↓
+Terraform Plan
+ ↓
+Terraform Apply
+
+60. How Do You Automate Terraform Deployments?
+-----------------------------------------------
+Using:
+
+Jenkins
+GitHub Actions
+GitLab CI
+Azure DevOps
+
+61. How Do You Secure Terraform State?
+-----------------------------------------------
+Remote backend
+Encryption
+Access control
+State locking
+
+62. Should Secrets Be Stored in Code?
+-----------------------------------------------
+No.
+
+Use:
+Secret Managers
+Environment Variables
+Vault
+
+63. What is HashiCorp Vault?
+-----------------------------------------------
+HashiCorp Vault securely stores:
+Passwords
+Tokens
+API keys
+Certificates
+
+64. Terraform Apply Failed. What Will You Check?
+-----------------------------------------------
+Error logs
+Credentials
+Network access
+Provider versions
+Resource limits
+
+65. State File Corruption. What Will You Do?
+-----------------------------------------------
+Restore backup
+Verify backend
+Re-run plan
+
+66. Resource Not Updating. Why?
+-----------------------------------------------
+Possible causes:
+Drift
+Incorrect state
+Dependency issues
+
+67. How Do You Manage Multiple Environments?
+-----------------------------------------------
+Methods:
+Workspaces
+Separate state files
+Separate folders
+
+68. How Do You Deploy Infrastructure Across Regions?
+------------------------------------------------------
+Use:
+Multiple providers
+Variables
+Modules
+
+69. How Do You Reuse Infrastructure Code?
+-----------------------------------------------
+Using:
+Modules
+Variables
+Remote module repositories
+
+70. How Do You Roll Back Terraform Changes?
+-----------------------------------------------
+Restore previous code version
+Run terraform apply
+Use state backups
+
+Terraform Configuration File Extension
+.tf
+Terraform Variable File
+terraform.tfvars
+Initialize Terraform
+terraform init
+Create Execution Plan
+terraform plan
+Apply Changes
+terraform apply
+Destroy Infrastructure
+terraform destroy
+Validate Configuration
+terraform validate
+Format Configuration
+terraform fmt
+
+71. Explain Your Terraform Project
+-----------------------------------------------
+Example Answer:
+Created AWS infrastructure using Terraform
+Managed VPC, EC2, ALB, and RDS
+Used remote state in S3
+Enabled locking using DynamoDB
+Integrated with Jenkins pipeline
+
+72. Why Did You Choose Terraform?
+-----------------------------------------------
+Infrastructure as Code
+Multi-cloud support
+Automation
+Reusability
+State management
+
+73. How Do You Handle Team Collaboration?
+-----------------------------------------------
+Remote backend
+State locking
+Git repositories
+Code reviews
+
+74. How Do You Organize Large Terraform Projects?
+-------------------------------------------------
+Structure:
+modules/
+environments/
+dev/
+test/
+prod/
+
+75. How Do You Prevent Accidental Resource Deletion?
+----------------------------------------------------
+Example:
+lifecycle {
+  prevent_destroy = true
+}
+
+Most Asked Terraform Interview Topics
+-----------------------------------------------
+Terraform basics
+Providers
+Resources
+Variables
+State files
+Modules
+
+Remote state
+State locking
+Workspaces
+Drift detection
+Multi-environment deployments
+CI/CD integration
+Terraform Cloud
+Security best practices
+Large-scale infrastructure design
+
+Important Terraform Commands Cheat Sheet
+-----------------------------------------------
+terraform init
+terraform plan
+terraform apply
+terraform destroy
+terraform validate
+terraform fmt
+terraform output
+terraform refresh
+terraform import
+terraform taint
+terraform untaint
+terraform workspace list
+terraform workspace new dev

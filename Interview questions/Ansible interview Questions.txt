@@ -1,0 +1,607 @@
+Ansible Full Interview Questions & Answers
+------------------------------------------------
+What is Ansible?
+
+Ansible is an open-source automation tool used for:
+Configuration Management
+Application Deployment
+Infrastructure Provisioning
+Orchestration
+Continuous Delivery
+It is agentless, meaning no software needs to be installed on target servers.
+
+1. What is Ansible?
+------------------------------------------------
+Ansible is an automation tool that manages servers, deploys applications, and automates IT tasks using SSH.
+Features
+Agentless architecture
+Simple YAML syntax
+Idempotent operations
+Easy learning curve
+Cross-platform support
+
+2. Why Use Ansible?
+------------------------------------------------
+Benefits
+Reduces manual work
+Consistent configurations
+Faster deployments
+Infrastructure as Code (IaC)
+Easy maintenance
+
+3. What is Configuration Management?
+------------------------------------------------
+Configuration management ensures systems maintain a desired and consistent state.
+Examples:
+Installing packages
+Managing users
+Updating configurations
+
+4. What Makes Ansible Agentless?
+------------------------------------------------
+Ansible uses:
+SSH (Linux/Unix)
+WinRM (Windows)
+No agent installation is required on managed nodes.
+
+5. Explain Ansible Architecture
+------------------------------------------------
+Control Node
+      |
+      | SSH
+      ↓
+Managed Nodes
+(Server1, Server2, Server3)
+Components
+Control Node
+Managed Nodes
+Inventory
+Playbooks
+Modules
+
+6. What is Control Node?
+------------------------------------------------
+The machine where Ansible is installed and executed.
+
+7. What are Managed Nodes?
+------------------------------------------------
+Servers managed by Ansible.
+Examples:
+Linux servers
+Windows servers
+Cloud instances
+
+8. What is Inventory?
+------------------------------------------------
+Inventory contains the list of managed hosts.
+Example:
+[web]
+192.168.1.10
+192.168.1.11
+[db]
+192.168.1.20
+
+9. Types of Inventory
+------------------------------------------------
+Static Inventory
+[servers]
+server1
+server2
+Dynamic Inventory
+Automatically fetches hosts from:
+AWS
+Azure
+GCP
+
+10. What is a Module?
+------------------------------------------------
+Modules are reusable units of work in Ansible.
+Examples:
+yum
+apt
+copy
+service
+file
+
+11. What is a Playbook?
+------------------------------------------------
+A Playbook is a YAML file that defines automation tasks.
+
+12. Why Use Playbooks?
+------------------------------------------------
+Reusability
+Version control
+Infrastructure as Code
+
+13. Basic Playbook Example
+------------------------------------------------
+---
+- hosts: web
+  tasks:
+  - name: Install Nginx
+    apt:
+      name: nginx
+      state: present
+
+14. How to Run a Playbook?
+------------------------------------------------
+ansible-playbook install-nginx.yml
+
+15. Explain Playbook Structure
+------------------------------------------------
+---
+- hosts: all
+  become: yes
+
+  tasks:
+    - name: Task1
+      module_name:
+
+Components:
+hosts
+become
+tasks
+modules
+
+16. What is an Ad-Hoc Command?
+------------------------------------------------
+A one-time command executed without a playbook.
+Example:
+ansible all -m ping
+
+17. Check Connectivity
+------------------------------------------------
+ansible all -m ping
+
+18. Install Package Using Ad-Hoc Command
+------------------------------------------------
+ansible web -m yum -a "name=httpd state=present"
+
+19. What is YAML?
+------------------------------------------------
+YAML stands for:
+YAML Ain't Markup Language
+Used for writing Ansible Playbooks.
+
+20. YAML Rules
+------------------------------------------------
+Uses indentation
+No tabs
+Key-value format
+Example:
+name: nginx
+state: present
+
+21. Default Inventory Location
+------------------------------------------------
+/etc/ansible/hosts
+
+22. Inventory Groups Example
+------------------------------------------------
+[web]
+web1
+web2
+
+[database]
+db1
+db2
+
+23. Host Variables Example
+------------------------------------------------
+web1 ansible_host=192.168.1.10
+
+24. What are Variables?
+------------------------------------------------
+Variables store reusable values.
+Example:
+app_name: nginx
+
+25. Variable Example
+------------------------------------------------
+---
+- hosts: all
+
+  vars:
+    package_name: nginx
+
+  tasks:
+  - name: Install Package
+    apt:
+      name: "{{ package_name }}"
+
+26. Types of Variables
+------------------------------------------------
+Playbook Variables
+Inventory Variables
+Host Variables
+Group Variables
+Registered Variables
+
+27. What are Facts?
+------------------------------------------------
+Facts are system information collected automatically.
+Examples:
+OS
+IP Address
+Hostname
+Memory
+
+28. Gather Facts Example
+------------------------------------------------
+gather_facts: yes
+
+29. Display Facts
+------------------------------------------------
+- debug:
+    var: ansible_hostname
+
+30. What is a Condition?
+------------------------------------------------
+Conditions control task execution.
+Example:
+when: ansible_os_family == "Debian"
+
+31. Example of Condition
+------------------------------------------------
+- name: Install Nginx
+  apt:
+    name: nginx
+    state: present
+
+  when: ansible_os_family == "Debian"
+
+32. What are Loops?
+------------------------------------------------
+Loops repeat tasks.
+Example:
+- name: Install Packages
+  apt:
+    name: "{{ item }}"
+    state: present
+
+  loop:
+    - nginx
+    - git
+    - curl
+
+33. What is a Handler?
+------------------------------------------------
+Handlers run only when notified.
+
+34. Handler Example
+------------------------------------------------
+tasks:
+- name: Copy Config
+  copy:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+  notify: Restart Nginx
+handlers:
+- name: Restart Nginx
+  service:
+    name: nginx
+    state: restarted
+
+35. What is a Role?
+------------------------------------------------
+Roles organize playbooks into reusable structures.
+
+36. Role Structure
+------------------------------------------------
+roles/
+ ├── webserver/
+ │   ├── tasks/
+ │   ├── handlers/
+ │   ├── vars/
+ │   ├── defaults/
+ │   ├── templates/
+ │   └── files/
+
+37. Benefits of Roles
+------------------------------------------------
+Reusability
+Maintainability
+Scalability
+
+38. What are Templates?
+------------------------------------------------
+Templates allow dynamic configuration generation.
+Uses Jinja2 syntax.
+39. Template Example
+------------------------------------------------
+server_name {{ hostname }};
+
+40. Template Module
+------------------------------------------------
+template:
+  src: nginx.conf.j2
+  dest: /etc/nginx/nginx.conf
+
+41. What is Ansible Galaxy?
+------------------------------------------------
+Ansible Galaxy is a repository for sharing Ansible roles.
+
+42. Install Role from Galaxy
+------------------------------------------------
+ansible-galaxy install geerlingguy.nginx
+
+43. What is Ansible Vault?
+------------------------------------------------
+Ansible Vault encrypts sensitive data.
+Examples:
+Passwords
+API Keys
+Secrets
+
+44. Create Vault File
+------------------------------------------------
+ansible-vault create secrets.yml
+
+45. Edit Vault File
+------------------------------------------------
+ansible-vault edit secrets.yml
+
+46. Encrypt Existing File
+------------------------------------------------
+ansible-vault encrypt secrets.yml
+
+47. What are Tags?
+------------------------------------------------
+Tags allow running selected tasks.
+Example:
+- name: Install Nginx
+  apt:
+    name: nginx
+  tags:
+    - install
+
+48. Run Specific Tag
+------------------------------------------------
+ansible-playbook playbook.yml --tags install
+
+49. Ignore Errors
+------------------------------------------------
+ignore_errors: yes
+
+50. Failed When Example
+------------------------------------------------
+failed_when: result.rc != 0
+
+51. What is become?
+------------------------------------------------
+Used to execute tasks with elevated privileges.
+
+52. Example
+------------------------------------------------
+become: yes
+Equivalent to:
+sudo
+
+53. Common Modules
+------------------------------------------------
+Module	Purpose
+ping	Connectivity
+copy	Copy files
+file	Manage files
+service	Manage services
+yum	Install packages
+apt	Install packages
+
+54. Copy Module Example
+------------------------------------------------
+copy:
+  src: file.txt
+  dest: /tmp/file.txt
+  
+55. File Module Example
+------------------------------------------------
+file:
+  path: /tmp/test.txt
+  state: touch
+
+56. Service Module Example
+------------------------------------------------
+service:
+  name: nginx
+  state: started
+
+57. What is Idempotency?
+------------------------------------------------
+Running the same task multiple times produces the same result.
+Example:
+Installing nginx repeatedly does not reinstall it.
+
+58. Why is Idempotency Important?
+------------------------------------------------
+Prevents duplicate changes
+Ensures consistency
+Safe re-execution
+
+59. What is Register?
+------------------------------------------------
+Stores command output.
+Example:
+- shell: hostname
+  register: output
+- debug:
+    var: output.stdout
+
+60. What is Delegate To?
+------------------------------------------------
+Runs task on another host.
+Example:
+delegate_to: localhost
+
+61. What is Dynamic Inventory?
+------------------------------------------------
+Automatically discovers infrastructure.
+Examples:
+AWS EC2
+Azure VMs
+GCP Instances
+
+62. Benefits of Dynamic Inventory
+------------------------------------------------
+Automatic updates
+Cloud integration
+Reduced maintenance
+
+63. Jenkins and Ansible Integration
+------------------------------------------------
+Typical Flow:
+Git
+ ↓
+Jenkins
+ ↓
+Ansible Playbook
+ ↓
+Deployment
+
+64. Execute Playbook from Jenkins
+------------------------------------------------
+ansible-playbook deploy.yml
+
+65. How Ansible Works with AWS?
+------------------------------------------------
+Using AWS modules.
+Examples:
+EC2
+S3
+VPC
+IAM
+
+66. Example AWS Module
+------------------------------------------------
+amazon.aws.ec2_instance:
+
+67. Check Inventory
+------------------------------------------------
+ansible-inventory --list
+
+68. Syntax Check
+
+ansible-playbook playbook.yml --syntax-check
+
+69. Dry Run
+------------------------------------------------
+ansible-playbook playbook.yml --check
+
+70. Increase Verbosity
+------------------------------------------------
+ansible-playbook playbook.yml -vvv
+
+71. How Do You Deploy an Application Using Ansible?
+------------------------------------------------
+Create inventory
+Create playbook
+Configure variables
+Deploy application
+Verify deployment
+
+72. How Do You Manage Secrets?
+------------------------------------------------
+Using Ansible Vault.
+
+73. How Do You Update 100 Servers Simultaneously?
+------------------------------------------------
+Using inventory groups and parallel execution.
+
+74. How Do You Roll Back a Deployment?
+------------------------------------------------
+Restore previous package
+Revert configuration
+Execute rollback playbook
+
+75. Ansible vs Puppet
+------------------------------------------------
+Ansible     	Puppet
+Agentless	    Agent-based
+YAML	        DSL
+Easier			More complex
+
+76. Ansible vs Chef
+------------------------------------------------
+Ansible		Chef
+YAML		Ruby
+Easier		Steeper learning curve
+
+77. Ansible vs Terraform
+------------------------------------------------
+Ansible						Terraform
+Configuration management	Infrastructure provisioning
+Procedural					Declarative
+
+Default SSH Port
+------------------------------------------------
+22
+
+Check Ansible Version
+------------------------------------------------
+ansible --version
+
+List Hosts
+------------------------------------------------
+ansible all --list-hosts
+
+Ping Hosts
+------------------------------------------------
+ansible all -m ping
+
+Run Shell Command
+------------------------------------------------
+ansible all -m shell -a "df -h"
+
+Check Playbook Syntax
+------------------------------------------------
+ansible-playbook playbook.yml --syntax-check
+
+
+78. Explain Your Ansible Project
+------------------------------------------------
+Example Answer:
+Managed Linux servers
+Automated Nginx deployment
+Configured load balancers
+Integrated with Jenkins CI/CD
+Used Vault for secrets
+
+79. Why Did You Choose Ansible?
+------------------------------------------------
+Agentless architecture
+Easy YAML syntax
+Fast deployment
+Easy integration with cloud platforms
+
+80. How Do You Ensure Playbook Reusability?
+------------------------------------------------
+Roles
+Variables
+Templates
+Galaxy roles
+Inventory
+Playbooks
+Modules
+Variables
+Handlers
+Roles
+Vault
+Dynamic Inventory
+AWS Integration
+CI/CD Integration
+Idempotency
+Performance Optimization
+Troubleshooting
+Large-Scale Automation
+
+Important Ansible Commands Cheat Sheet
+------------------------------------------------
+ansible --version
+ansible all -m ping
+ansible-playbook playbook.yml
+ansible-playbook playbook.yml --check
+ansible-playbook playbook.yml --syntax-check
+ansible-playbook playbook.yml -vvv
+ansible-vault create secrets.yml
+ansible-vault edit secrets.yml
+ansible-inventory --list
+ansible-galaxy install role_name

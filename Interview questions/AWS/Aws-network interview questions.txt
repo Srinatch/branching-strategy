@@ -1,0 +1,447 @@
+AWS Networking – Complete Interview Questions and Answers
+---------------------------------------------------------
+
+1. What is AWS Networking?
+---------------------------------------------------------
+AWS Networking refers to the services and components provided by Amazon Web Services to build secure, scalable, 
+and highly available network infrastructures in the cloud.
+
+2. What is VPC?
+---------------------------------------------------------
+VPC (Virtual Private Cloud) is a logically isolated virtual network within AWS where you launch resources.
+
+Benefits
+Network isolation
+Security
+Scalability
+Full control over IP addressing
+
+3. Components of a VPC
+---------------------------------------------------------
+CIDR Block
+Subnets
+Route Tables
+Internet Gateway
+NAT Gateway
+Security Groups
+NACLs
+Elastic IP
+
+4. What is CIDR?
+---------------------------------------------------------
+CIDR (Classless Inter-Domain Routing) defines IP ranges.
+
+Example:
+10.0.0.0/16
+
+Meaning:
+Network address = 10.0.0.0
+Total IP addresses = 65,536
+
+5. Difference Between Default and Custom VPC
+---------------------------------------------------------
+Default VPC						Custom VPC
+Automatically created			User created
+Public subnet exists			User defines subnets
+Internet access enabled			Manual configuration
+
+6. What is the Default CIDR of a VPC?
+---------------------------------------------------------
+Example:
+172.31.0.0/16
+
+(Default VPC CIDR)
+
+7. What is a Subnet?
+---------------------------------------------------------
+A subnet is a subdivision of a VPC.
+
+8. Types of Subnets
+---------------------------------------------------------
+Public Subnet
+Has route to Internet Gateway.
+Private Subnet
+No direct internet access.
+
+9. Difference Between Public and Private Subnet
+---------------------------------------------------------
+Public Subnet				Private Subnet
+Internet access				No direct internet
+Hosts web servers			Hosts databases
+
+10. How Many Subnets Can Be Created?
+---------------------------------------------------------
+Depends on the VPC CIDR block.
+Example:
+10.0.0.0/16
+Can be divided into multiple /24 subnets.
+
+11. What is a Route Table?
+---------------------------------------------------------
+A route table contains rules that determine network traffic routing.
+
+12. Components of Route Table
+---------------------------------------------------------
+Destination
+Target
+
+Example:
+Destination	Target
+0.0.0.0/0	Internet Gateway
+10.0.0.0/16	Local
+
+13. What Does 0.0.0.0/0 Mean?
+---------------------------------------------------------
+Represents all IPv4 addresses (default route).
+
+14. What is an Internet Gateway (IGW)?
+---------------------------------------------------------
+An Internet Gateway enables communication between VPC and the Internet.
+
+15. Characteristics of IGW
+---------------------------------------------------------
+Horizontally scalable
+Highly available
+Managed service
+
+16. Can Private Subnets Use IGW?
+---------------------------------------------------------
+No.
+Private subnets require a NAT Gateway for outbound internet access.
+
+17. What is NAT Gateway?
+---------------------------------------------------------
+NAT Gateway allows private instances to access the internet without exposing them to incoming connections.
+
+18. Why Use NAT Gateway?
+---------------------------------------------------------
+Example:
+Private EC2
+      ↓
+NAT Gateway
+      ↓
+Internet
+
+Used for:
+OS updates
+Package downloads
+
+19. Difference Between NAT Gateway and Internet Gateway
+---------------------------------------------------------
+NAT Gateway			Internet Gateway
+Outbound only		Inbound and outbound
+Private subnet		Public subnet
+
+20. NAT Gateway vs NAT Instance
+---------------------------------------------------------
+NAT Gateway				NAT Instance
+Managed					Self-managed
+Scalable				Manual scaling
+
+21. What is Security Group?
+---------------------------------------------------------
+Security Group acts as a virtual firewall for EC2 instances.
+
+22. Characteristics of Security Groups
+---------------------------------------------------------
+Stateful
+Allow rules only
+Instance-level
+
+23. Example Security Group
+---------------------------------------------------------
+Allow SSH:
+Type	Port	Source
+SSH		22		0.0.0.0/0
+
+24. What Does Stateful Mean?
+---------------------------------------------------------
+If inbound traffic is allowed, return traffic is automatically allowed.
+
+25. What is NACL?
+---------------------------------------------------------
+Network ACL (Access Control List) is a subnet-level firewall.
+
+26. Characteristics of NACL
+---------------------------------------------------------
+Stateless
+Supports Allow and Deny rules
+Subnet-level
+
+27. Security Group vs NACL
+---------------------------------------------------------
+Security Group			NACL
+Stateful				Stateless
+Instance level			Subnet level
+Allow only				Allow and Deny
+
+28. What is Elastic IP?
+---------------------------------------------------------
+Static public IPv4 address for AWS resources.
+
+29. Benefits of Elastic IP
+---------------------------------------------------------
+Static address
+Failover support
+Disaster recovery
+
+30. Public IP vs Elastic IP
+---------------------------------------------------------
+Public IP			Elastic IP
+Dynamic				Static
+
+31. What is VPC Peering?
+---------------------------------------------------------
+Connects two VPCs privately.
+
+32. Benefits of VPC Peering
+---------------------------------------------------------
+Private communication
+Low latency
+No internet required
+
+33. Limitation of VPC Peering
+---------------------------------------------------------
+No transitive routing.
+Example:
+VPC-A ↔ VPC-B
+VPC-B ↔ VPC-C
+VPC-A cannot access VPC-C
+
+34. What is Transit Gateway?
+---------------------------------------------------------
+Acts as a hub connecting multiple VPCs and VPNs.
+
+35. Benefits of Transit Gateway
+---------------------------------------------------------
+Centralized routing
+Simplified architecture
+Supports transitive routing
+
+36. What is Site-to-Site VPN?
+---------------------------------------------------------
+Secure connection between on-premises network and AWS.
+
+37. Components of VPN
+---------------------------------------------------------
+Virtual Private Gateway
+Customer Gateway
+
+38. VPN Uses Which Protocol?
+---------------------------------------------------------
+IPSec
+
+39. What is AWS Direct Connect?
+---------------------------------------------------------
+Dedicated private connection between on-premises and AWS.
+
+40. Advantages of Direct Connect
+---------------------------------------------------------
+Lower latency
+Consistent performance
+Better bandwidth
+
+41. Direct Connect vs VPN
+---------------------------------------------------------
+Direct Connect	VPN
+Private line	Internet based
+Faster	Lower cost
+
+42. What is Route 53?
+---------------------------------------------------------
+Route 53 is AWS DNS service.
+
+Functions:
+Domain registration
+DNS routing
+Health checks
+
+43. Routing Policies in Route 53
+---------------------------------------------------------
+Simple
+Weighted
+Latency
+Failover
+Geolocation
+Multivalue
+
+44. What is Weighted Routing?
+---------------------------------------------------------
+Distributes traffic based on percentages.
+
+Example:
+Server A = 70%
+Server B = 30%
+
+45. What is Failover Routing?
+---------------------------------------------------------
+Primary server failure automatically switches to secondary server.
+
+46. Types of Load Balancers
+---------------------------------------------------------
+ALB - Application Load Balancer
+
+NLB - Network Load Balancer
+
+GWLB - Gateway Load Balancer
+
+47. ALB vs NLB
+---------------------------------------------------------
+ALB					NLB
+Layer 7				Layer 4
+HTTP/HTTPS			TCP/UDP
+
+48. Why Use Load Balancers?
+---------------------------------------------------------
+High availability
+Traffic distribution
+Fault tolerance
+
+49. What is VPC Endpoint?
+---------------------------------------------------------
+Allows private access to AWS services without internet.
+
+50. Types of VPC Endpoints
+---------------------------------------------------------
+Gateway Endpoint
+Supports: 
+S3
+DynamoDB
+Interface Endpoint
+Uses ENI and PrivateLink.
+
+51. Benefits of VPC Endpoint
+---------------------------------------------------------
+Private communication
+Improved security
+No NAT required
+
+52. What is AWS PrivateLink?
+---------------------------------------------------------
+Provides secure private connectivity to services using ENIs.
+
+53. What is ENI?
+---------------------------------------------------------
+Elastic Network Interface.
+
+Contains:
+MAC address
+Private IP
+Security groups
+
+54. What is Flow Log?
+---------------------------------------------------------
+Captures network traffic information in VPC.
+
+55. Why Use VPC Flow Logs?
+---------------------------------------------------------
+Troubleshooting:
+Connectivity issues
+Security analysis
+Traffic monitoring
+
+56. How Do You Connect On-Premises to AWS?
+---------------------------------------------------------
+Methods:
+VPN
+Direct Connect
+Transit Gateway
+
+57. Does AWS Support IPv6?
+---------------------------------------------------------
+Yes.
+
+Example:
+2001:db8::/56
+
+58. Difference Between IPv4 and IPv6
+---------------------------------------------------------
+IPv4					IPv6
+32-bit					128-bit
+Limited addresses		Huge address space
+
+59. EC2 Cannot Access Internet. What Will You Check?
+---------------------------------------------------------
+Route table
+Internet Gateway
+Security Group
+NACL
+Public IP
+
+60. Private Instance Cannot Download Packages. Why?
+---------------------------------------------------------
+Possible reasons:
+
+NAT Gateway missing
+Route table issue
+Security Group issue
+
+61. SSH Not Working. What Will You Check?
+---------------------------------------------------------
+Port 22 open
+Security Group
+NACL
+Route table
+Public IP
+
+62. DNS Not Resolving. Why?
+---------------------------------------------------------
+Check:
+Route 53 records
+VPC DNS settings
+Resolver configuration
+
+63. Explain Three-Tier Architecture
+---------------------------------------------------------
+Internet
+   ↓
+ALB
+   ↓
+Public Subnet
+(Web Servers)
+   ↓
+Private Subnet
+(Application Servers)
+   ↓
+Private Subnet
+(Database)
+
+64. How Do You Secure a Database?
+---------------------------------------------------------
+Place DB in private subnet
+Restrict security groups
+No public IP
+
+65. How Do You Make Applications Highly Available?
+---------------------------------------------------------
+Multi-AZ deployment
+Load Balancer
+Auto Scaling
+
+66. Explain Your Networking Project
+---------------------------------------------------------
+Example Answer:
+"Designed a VPC with public and private subnets across multiple Availability Zones. Configured Internet Gateway, NAT Gateway, Route Tables, Security Groups, ALB, and Auto Scaling for a highly available three-tier application."
+
+Frequently Asked Rapid-Fire Questions
+---------------------------------------------------------
+Which Firewall is Stateful?
+Security Group
+
+Which Firewall is Stateless?
+NACL
+
+Which AWS Service Provides DNS?
+Route 53
+
+Which Service Enables Internet Access?
+Internet Gateway
+
+Which Service Enables Private Internet Access?
+NAT Gateway
+
+Which Protocol is Used by VPN?
+IPSec
+
+Which Service Connects Multiple VPCs?
+Transit Gateway

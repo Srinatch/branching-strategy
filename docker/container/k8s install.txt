@@ -1,0 +1,41 @@
+create aws instances 2
+
+sudo apt update
+sudo apt install -y docker.io
+sudo usermod -aG docker $USER
+
+
+sudo apt-get update
+sudo apt-get install -y apt-transport-https ca-certificates curl gpg
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.35/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.35/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl
+sudo systemctl enable --now kubelet
+
+
+cd /temp
+
+wget https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.23/cri-dockerd_0.3.23.3-0.ubuntu-jammy_amd64.deb
+
+sudo dpkg -i cri-dockerd_0.3.23.3-0.ubuntu-jammy_amd64.deb
+
+sudo -i
+
+kubeadm init --cri-socket unix:///var/run/cri-dockerd.sock
+
+mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+  
+ kubectl get nodes
+  
+ #in node
+  kubeadm join 172.31.8.59:6443 --token 2hyzwj.l9qv21llip4la9n1 --discovery-token-ca-cert-hash sha256:deff7a9f783db333eb5b2e1232ae0b2bd48f938594f584881ec9306d2f37ae7d --cri-socket unix:///var/run/cri-dockerd.sock
+
+# in master 
+kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml
+
+kubectl get nodes -w
+kubectl get nodes

@@ -1,0 +1,751 @@
+Basic Git Questions
+-------------------------------
+1. What is Git?
+
+Git is a distributed version control system used to track changes in source code and collaborate with others on software projects.
+
+2. What is the difference between Git and GitHub?
+
+Git: A version control tool installed locally on your computer.
+GitHub: A cloud-based platform that hosts Git repositories and provides collaboration features.
+
+3. What is a repository (repo)?
+
+A repository is a storage location that contains project files, code, and the complete history of changes.
+
+4. How do you initialize a Git repository?
+
+git init
+
+5. How do you check the status of your repository?
+
+git status
+
+6. How do you add files to the staging area?
+
+git add filename
+Or all files:
+git add .
+
+7. What is a commit?
+
+A commit is a snapshot of changes saved in Git's history.
+
+8. How do you commit changes?
+
+git commit -m "Your commit message"
+
+9. How do you view commit history?
+
+git log
+
+10. What is the staging area?
+
+The staging area is an intermediate space where changes are prepared before committing.
+
+11. What is a branch?
+
+A branch is an independent line of development that allows you to work on features without affecting the main codebase.
+
+12. How do you create a new branch?
+
+git branch feature-branch
+
+13. How do you switch branches?
+
+git checkout feature-branch
+Or:
+git switch feature-branch
+
+14. How do you create and switch to a branch in one command?
+
+git checkout -b feature-branch
+
+15. How do you merge a branch?
+
+git merge feature-branch
+
+16. What is a merge conflict?
+
+A merge conflict occurs when Git cannot automatically combine changes from different branches.
+
+17. How do you connect a local repository to GitHub?
+
+git remote add origin https://github.com/user/repo.git
+
+18. How do you push code to GitHub?
+
+git push origin main
+
+19. How do you pull changes from GitHub?
+
+git pull origin main
+
+20. How do you clone a repository?
+
+git clone https://github.com/user/repo.git
+
+21. What is the difference between git fetch and git pull?
+
+git fetch: Downloads changes but doesn't merge them.
+git pull: Downloads and merges changes automatically.
+
+22. What does git stash do?
+
+Temporarily saves uncommitted changes without committing them.
+git stash
+
+23. How do you view branches?
+
+git branch
+
+All branches:
+git branch -a
+
+24. How do you delete a branch?
+
+git branch -d branch-name
+
+25. What is .gitignore?
+
+A file that specifies which files Git should ignore.
+Example:
+node_modules/
+*.log
+.env
+
+26. What is a Pull Request (PR)?
+
+A Pull Request is a request to merge changes from one branch into another.
+
+27. What is a Fork?
+
+A fork is a personal copy of someone else's repository on GitHub.
+
+28. What is GitHub Actions?
+
+GitHub Actions is a CI/CD tool used to automate workflows such as testing and deployment.
+
+29. What is the difference between a fork and a clone?
+
+----------------------------------------------------------
+       Fork	              |     Clone                |
+----------------------------------------------------------
+Created on GitHub	      | Created on local machine |
+Remote copy	              | Local copy               |
+Used for contributing     | Used for development     |
+----------------------------------------------------------
+
+30. What are Issues in GitHub?
+
+Issues are used to track bugs, tasks, feature requests, and discussions.
+
+31. What is Git Rebase?
+
+Rebase moves commits from one branch onto another to create a linear history.
+git rebase main
+
+32. Difference between Merge and Rebase?
+
+--------------------------------------------------------
+       Merge	          |     Rebase                 |
+--------------------------------------------------------
+Preserves history         | Creates cleaner history    |
+Creates merge commit      | No merge commit            |
+--------------------------------------------------------
+
+33. What is HEAD in Git?
+
+HEAD is a pointer to the current commit or branch you're working on.
+
+34. What is Cherry-picking?
+
+Applying a specific commit from one branch to another.
+git cherry-pick commit-id
+
+35. How do you undo the last commit?
+
+Keep changes:
+git reset --soft HEAD~1
+Remove changes:
+git reset --hard HEAD~1
+
+36. What is the difference between Git Reset and Git Revert?
+
+git reset: Removes commits from history.
+git revert: Creates a new commit that undoes previous changes.
+
+37. What is a Detached HEAD state?
+
+Occurs when HEAD points directly to a commit instead of a branch.
+
+38. How do you see remote repositories?
+
+git remote -v
+
+39. How do you rename a branch?
+
+git branch -m new-branch-name
+
+40. What is Continuous Integration (CI)?
+
+A practice where code changes are automatically tested and integrated into the main branch.
+
+Q: Explain the Git workflow.
+
+Answer:
+Clone repository.
+Create a new branch.
+Make changes.
+Add changes:
+git add .
+Commit changes:
+git commit -m "Added feature"
+Push branch:
+git push origin feature-branch
+Create Pull Request.
+Review and merg
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+Git and GitHub Full Interview Questions & Answers
+
+1. What is Git?
+
+Git is a distributed version control system used to track changes in source code during software development. 
+It allows multiple developers to work on the same project efficiently.
+Features
+Distributed architecture
+Fast performance
+Branching and merging
+Version history tracking
+Collaboration support
+
+2. What is GitHub?
+
+GitHub is a cloud-based platform used to host Git repositories and collaborate on projects.
+GitHub Features
+Remote repository hosting
+Pull requests
+Code review
+CI/CD integration
+Issue tracking
+GitHub Actions
+
+3. Difference Between Git and GitHub
+
+Git	                               GitHub
+Version control tool	       Hosting platform
+Installed locally	           Cloud-based
+Tracks code changes            Stores Git repositories
+Works offline	               Requires internet for remote operations
+
+4. What is a Repository?
+
+A repository (repo) is a storage location where project files and Git history are stored.
+Types
+Local repository
+Remote repository
+
+5. What is Version Control?
+
+Version control is a system that tracks file changes over time so developers can restore previous versions if needed.
+
+6. What is the Difference Between Centralized and Distributed Version Control?
+
+Centralized	              Distributed
+Single central server	  Multiple copies
+Internet required	      Offline work possible
+Example: SVN	          Example: Git
+
+7. Explain Git Architecture
+
+Git has three main areas:
+Working Directory -> Staging Area -> Local Repository
+
+Working Directory
+Where files are edited.
+
+Staging Area
+Temporary area before commit.
+
+Repository
+Stores committed changes.
+
+8. What is the Git Workflow?
+
+Modify Files
+    ↓
+git add
+    ↓
+Staging Area
+    ↓
+git commit
+    ↓
+Local Repository
+    ↓
+git push
+    ↓
+Remote Repository
+
+9. How to Initialize a Git Repository?
+
+git init
+Creates a new local Git repository.
+
+10. How to Clone a Repository?
+
+git clone <repository-url>
+Example:
+git clone https://github.com/user/project.git
+
+11. Difference Between git pull and git fetch
+
+git fetch	        git pull
+Downloads changes	Downloads + merges
+
+Safer	Directly updates local branch
+
+12. Difference Between git merge and git rebase
+
+Merge	                 Rebase
+Preserves history	     Creates linear history
+Creates merge commit	  No merge commit
+
+Merge Example
+git merge feature
+Rebase Example
+git rebase main
+
+13. What is git status?
+
+git status
+Shows:
+Modified files
+Staged files
+Untracked files
+
+14. What is git add?
+
+git add file.txt
+Moves changes to staging area.
+Add all files
+git add .
+
+15. What is git commit?
+
+git commit -m "message"
+Saves staged changes permanently.
+
+16. What is git log?
+
+git log
+Displays commit history.
+One-line format
+git log --oneline
+
+17. How to Remove Files from Git Tracking?
+
+git rm file.txt
+Remove only from Git:
+git rm --cached file.txt
+
+18. What is .gitignore?
+
+.gitignore specifies files Git should ignore.
+
+Example:
+node_modules/
+*.log
+.env
+
+19. What is a Branch?
+
+A branch is an independent line of development.
+
+20. How to Create a Branch?
+
+git branch feature
+
+21. How to Switch Branches?
+
+git checkout feature
+Modern command:
+git switch feature
+
+22. Create and Switch Branch Together
+
+git checkout -b feature
+or
+git switch -c feature
+
+23. How to Delete a Branch?
+
+git branch -d feature
+Force delete:
+git branch -D feature
+
+24. What is HEAD in Git?
+
+HEAD is a pointer to the current branch/commit.
+
+25. What is Detached HEAD?
+
+Occurs when HEAD points directly to a commit instead of a branch.
+
+26. What is Merge Conflict?
+
+A conflict occurs when Git cannot automatically merge changes.
+
+27. How to Resolve Merge Conflicts?
+
+Steps:
+Open conflicting file
+Edit conflict markers
+Save file
+Add file
+git add file.txt
+Commit merge
+git commit
+
+28. What are Conflict Markers?
+
+<<<<<<< HEAD
+Current code
+=======
+Incoming code
+>>>>>>> branch
+
+29. How to Add Remote Repository?
+
+git remote add origin <url>
+
+30. How to View Remote URLs?
+
+git remote -v
+
+31. How to Push Code?
+
+git push origin main
+
+32. How to Pull Code?
+
+git pull origin main
+
+33. What is origin in Git?
+
+origin is the default remote repository name.
+
+34. What is a Pull Request?
+
+A pull request (PR) is a request to merge changes from one branch into another.
+
+35. What is Forking?
+
+Forking creates a personal copy of another user's repository.
+
+36. Difference Between Fork and Clone
+
+Fork	              Clone
+Server-side copy	  Local copy
+Used in open source	  Used for local development
+
+37. What is GitHub Actions?
+
+GitHub Actions is a CI/CD automation service in GitHub.
+
+38. What is CI/CD?
+
+CI — Continuous Integration
+Automatically tests code changes.
+CD — Continuous Delivery/Deployment
+Automatically releases applications.
+
+39. What is Stashing?
+
+git stash
+Temporarily saves uncommitted changes.
+Restore stash
+git stash apply
+
+40. What is Cherry-pick?
+
+git cherry-pick <commit-id>
+Applies a specific commit to another branch.
+
+41. What is Tagging?
+
+git tag v1.0
+Used to mark release versions.
+
+42. Difference Between Soft, Mixed, and Hard Reset
+
+Reset Type	  Staging Area	 Working Directory
+Soft	       Preserved	Preserved
+Mixed	           Reset	Preserved
+Hard	           Reset	Reset
+
+Examples:
+git reset --soft HEAD~1
+git reset --mixed HEAD~1
+git reset --hard HEAD~1
+
+43. What is Reflog?
+
+git reflog
+Tracks all HEAD changes.
+Useful for recovering deleted commits.
+
+44. How to Undo Last Commit?
+
+Keep changes:
+git reset --soft HEAD~1
+Delete changes:
+git reset --hard HEAD~1
+
+45. What is Squashing?
+
+Combining multiple commits into one commit.
+
+46. What is Bisect in Git?
+
+git bisect
+Used to find the commit that introduced a bug.
+
+47. What is Git Hook?
+
+Scripts triggered before/after Git events.
+Examples:
+pre-commit
+post-merge
+pre-push
+
+48. Difference Between Fast-forward and Non-fast-forward Merge
+
+Fast-forward	Non-fast-forward
+Linear merge	Merge commit created
+
+49. What is Upstream Branch?
+
+git push -u origin main
+Links local branch to remote branch.
+
+50. What is Bare Repository?
+
+A repository without working files, mainly used as a remote server repository.
+
+51. How Do You Recover a Deleted Branch?
+
+Using reflog:
+git reflog
+git checkout -b branch-name <commit-id>
+
+52. You Committed to Wrong Branch. What Will You Do?
+
+Option 1
+Cherry-pick commit to correct branch.
+Option 2
+git reset --soft HEAD~1
+
+Move commit and recommit on correct branch.
+
+53. How Do You Revert a Pushed Commit?
+
+git revert <commit-id>
+Safest approach for shared repositories.
+
+54. Difference Between Revert and Reset
+
+   Revert	                 Reset
+Creates new commit	    Removes commit history
+Safe for shared repos	Dangerous for shared repos
+
+55. Explain Git Flow Strategy
+
+Main Branches
+main/master
+develop
+Supporting Branches
+feature
+release
+hotfix
+
+Important Git Commands Cheat Sheet
+
+git init
+git clone <url>
+git status
+git add .
+git commit -m "message"
+git push
+git pull
+git fetch
+git branch
+git checkout
+git merge
+git rebase
+git stash
+git reset
+git revert
+git log
+git diff
+git tag
+
+56. Why Do You Use Git?
+
+Team collaboration
+Code backup
+Track changes
+Rollback support
+Branching
+
+57. Explain Your Daily Git Workflow
+
+Example Answer:
+
+Pull latest code
+Create feature branch
+Develop code
+Commit changes
+Push branch
+Create pull request
+Resolve conflicts if needed
+Merge after review
+
+58. Best Practices in Git
+
+Commit frequently
+Use meaningful commit messages
+Pull before push
+Avoid pushing directly to main
+Use branches properly
+Review code before merging
+GitHub Commands
+
+59. Authenticate GitHub Using SSH
+
+Generate SSH key:
+ssh-keygen -t rsa -b 4096
+Add SSH key to GitHub.
+Test connection:
+ssh -T git@github.com
+
+60. HTTPS vs SSH in GitHub
+
+HTTPS	                  SSH
+Username/password/token	  SSH keys
+Easier setup	          More secure
+
+61. What command checks configured username?
+
+git config user.name
+
+62. Global Git Config Command
+
+git config --global
+
+63. View Git Configuration
+
+git config --list
+
+64. Rename Branch
+
+git branch -m old-name new-name
+
+65. Show Differences Between Files
+
+git diff
+
+66. List Branches
+
+git branch
+Remote branches:
+git branch -r
+
+67. Delete Remote Branch
+
+git push origin --delete branch-name
+
+68. Explain Rebase Workflow
+
+Rebase moves commits from one branch onto another base commit to create clean history.
+
+69. What Problems Can Rebase Cause?
+
+History rewriting
+Conflicts
+Problems in shared branches
+
+70. Explain Monorepo
+
+A single repository containing multiple projects/services.
+
+71. What is Git Submodule?
+
+A repository embedded inside another repository.
+
+72. Git Subtree vs Submodule
+
+Subtree	            Submodule
+Easier management	Separate repository tracking
+No extra commands	Requires initialization
+
+73. Explain Interactive Rebase
+
+git rebase -i HEAD~5
+
+Used to:
+
+Squash commits
+Edit commits
+Reorder commits
+
+74. What is Blame Command?
+
+git blame file.txt
+Shows who changed each line.
+
+75. What are GitHub Issues?
+
+Used for bug tracking and task management in GitHub.
+
+76. What are GitHub Projects?
+
+Project management boards in GitHub.
+
+77. What is CODEOWNERS File?
+
+Defines reviewers responsible for specific files/directories.
+
+78. What is Protected Branch?
+
+Prevents direct pushes and enforces PR reviews.
+
+79. Explain GitHub Actions Workflow File
+
+Example:
+
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm install
+      - run: npm test
+
+
+Practical Commands to Remember
+git stash
+git cherry-pick
+git rebase
+git revert
+git reset
+git reflog

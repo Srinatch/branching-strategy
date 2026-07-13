@@ -1,0 +1,39 @@
+creating docker container nopcommerce commands
+--------------------------------------------------------------------
+
+mkdir nopcommerce
+cd nopcommerce
+vi dockerfile
+FROM mcr.microsoft.com/dotnet/sdk:7.0
+
+docker image pull mcr.microsoft.com/dotnet/sdk:7.0
+wget https://github.com/nopSolutions/nopCommerce/releases/download/release-4.90.3/nopCommerce_4.90.3_NoSource_linux_x64.zip
+mkdir nop
+mv nopCommerce_4.90.3_NoSource_linux_x64.zip nop/
+cd nop
+unzip nopCommerce_4.90.3_NoSource_linux_x64.zip
+cd ..
+vi dockerfile
+EXPOSE 5000
+COPY ./nop/ /nop
+
+docker image build -t nop:0.0.1 .
+docker container run -it -p 32000:5000 nop:0.0.1 /bin/bash
+dotnet nop.web.dll --urls"http//0.0.0.0:5000
+exit
+docker image rm -f busy _
+vi dockerfile
+WORKDIR /nop
+CMD ["dotnet","nop.web.dll","--urls","https://0.0.0.0:5000"]
+
+docker image build -t nop:1.0 .
+docker container run -d -P --name nop nop:1.0
+docker container inspect nop
+docker rm -f nopbd
+docker container run -d --name nopbd -v nopbd:/var/lib/mysql -e "MYSQL_ROOT_PASSWORD=nop12345" -e "MYSQL_USER=nop" -e "MYSQL_PASSWORD=nop12345" -e "MYSQL_DATABASE=nop" mysql:8.0 _ debian
+docker container inspect nopbd
+docker container start nop
+docker container ls -a
+docker container stats
+docker volume inspect nopbd
+cd /var/lib/docker/volumes/nopbd/_data

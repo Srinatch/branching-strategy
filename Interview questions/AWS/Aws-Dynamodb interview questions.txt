@@ -1,0 +1,408 @@
+AWS DynamoDB – Complete Interview Questions and Answers
+------------------------------------------------------------
+1. What is DynamoDB?
+------------------------------------------------------------
+Amazon Web Services DynamoDB is a fully managed NoSQL database service that provides fast and predictable performance with seamless scalability.
+
+Features
+Serverless
+Fully managed
+Low latency (single-digit milliseconds)
+High availability
+Automatic scaling
+Backup and restore support
+
+2. What Type of Database is DynamoDB?
+------------------------------------------------------------
+DynamoDB is a:
+NoSQL database
+Key-value database
+Document database
+
+3. Why Use DynamoDB?
+------------------------------------------------------------
+High performance
+Scalability
+Fully managed
+No server administration
+High availability
+
+4. What are the Main Components of DynamoDB?
+------------------------------------------------------------
+Tables
+Items
+Attributes
+Primary Keys
+Indexes
+
+5. What is a Table?
+------------------------------------------------------------
+A table stores data.
+
+Example:
+Employees
+Customers
+Orders
+
+6. What is an Item?
+------------------------------------------------------------
+An item is equivalent to a row in relational databases.
+
+Example:
+{
+  "EmployeeID":1001,
+  "Name":"John",
+  "Department":"DevOps"
+}
+
+7. What is an Attribute?
+------------------------------------------------------------
+An attribute is equivalent to a column.
+
+Example:
+EmployeeID
+Name
+Department
+Salary
+
+8. What is a Primary Key?
+------------------------------------------------------------
+Uniquely identifies items in a table.
+
+Types:
+Partition Key
+Composite Key (Partition Key + Sort Key)
+
+9. What is a Partition Key?
+------------------------------------------------------------
+Determines where data is stored.
+
+Example:
+EmployeeID
+
+10. What is a Sort Key?
+------------------------------------------------------------
+Used to organize data within a partition.
+
+Example:
+CustomerID
+OrderDate
+
+11. Partition Key vs Sort Key
+------------------------------------------------------------
+Partition Key				Sort Key
+Mandatory					Optional
+Determines partition		Determines order
+
+12. Supported Data Types
+------------------------------------------------------------
+Scalar Types
+String
+Number
+Boolean
+Binary
+Document Types
+List
+Map
+Set Types
+String Set
+Number Set
+Binary Set
+
+13. What are Capacity Modes?
+------------------------------------------------------------
+Provisioned Mode
+Fixed throughput.
+On-Demand Mode
+Automatically scales.
+
+14. Provisioned vs On-Demand
+------------------------------------------------------------
+Provisioned					On-Demand
+Predictable workloads		Variable workloads
+Lower cost					More expensive
+Manual capacity				Automatic scaling
+
+15. What are RCU and WCU?
+------------------------------------------------------------
+RCU (Read Capacity Unit)
+1 strongly consistent read per second for items up to 4 KB.
+
+WCU (Write Capacity Unit)
+1 write per second for items up to 1 KB.
+
+16. What Types of Reads are Supported?
+------------------------------------------------------------
+Strongly Consistent Reads
+Always return latest data.
+Eventually Consistent Reads
+May return stale data.
+
+17. Strong vs Eventual Consistency
+------------------------------------------------------------
+Strong Consistency	Eventual Consistency
+Latest data	Slight delay possible
+Higher cost	Lower cost
+
+18. What are Secondary Indexes?
+------------------------------------------------------------
+Indexes improve query flexibility.
+
+Types:
+Global Secondary Index (GSI)
+Local Secondary Index (LSI)
+
+19. What is GSI?
+------------------------------------------------------------
+Allows querying with a different partition key.
+
+Can have:
+Different partition key
+Different sort key
+
+20. What is LSI?
+------------------------------------------------------------
+Uses same partition key but different sort key.
+
+21. GSI vs LSI
+------------------------------------------------------------
+GSI								LSI
+Different partition key			Same partition key
+Created anytime					Created during table creation
+Separate throughput				Shares throughput
+
+22. Common DynamoDB Operations
+------------------------------------------------------------
+PutItem
+Insert item.
+
+GetItem
+Retrieve item.
+
+UpdateItem
+Update item.
+
+DeleteItem
+Delete item.
+
+23. Scan vs Query
+------------------------------------------------------------
+Query					Scan
+Faster					Slower
+Uses key				Reads entire table
+
+24. Why Prefer Query Over Scan?
+------------------------------------------------------------
+Better performance
+Lower cost
+
+25. Backup Types
+------------------------------------------------------------
+On-Demand Backup
+Manual backup.
+Point-In-Time Recovery (PITR)
+Continuous backup.
+
+26. What is PITR?
+------------------------------------------------------------
+Allows recovery to any second within the retention period.
+
+Retention:
+35 days
+
+27. What are DynamoDB Streams?
+------------------------------------------------------------
+Capture item-level changes.
+
+Events:
+INSERT
+MODIFY
+REMOVE
+
+28. Why Use Streams?
+------------------------------------------------------------
+Auditing
+Event processing
+Lambda integration
+
+29. DynamoDB Streams with Lambda
+------------------------------------------------------------
+Insert Item
+      ↓
+DynamoDB Stream
+      ↓
+Lambda Trigger
+      ↓
+Process Event
+
+30. What is TTL?
+------------------------------------------------------------
+Time To Live automatically deletes expired items.
+
+Example:
+Session expires after 24 hours
+
+31. Does DynamoDB Support Transactions?
+------------------------------------------------------------
+Yes.
+
+Operations:
+TransactWriteItems
+TransactGetItems
+Provides ACID properties.
+
+32. How is DynamoDB Secured?
+------------------------------------------------------------
+Using:
+IAM policies
+Encryption
+VPC Endpoints
+
+33. Encryption in DynamoDB
+------------------------------------------------------------
+Default encryption:
+AWS owned keys
+AWS managed keys
+Customer managed KMS keys
+
+34. Can DynamoDB Be Accessed Privately?
+------------------------------------------------------------
+Yes.
+
+Using:
+VPC Gateway Endpoint
+
+35. How is DynamoDB Monitored?
+------------------------------------------------------------
+Using CloudWatch metrics:
+ReadThrottleEvents
+WriteThrottleEvents
+ConsumedReadCapacityUnits
+ConsumedWriteCapacityUnits
+
+36. What is DAX?
+------------------------------------------------------------
+DynamoDB Accelerator.
+Provides in-memory caching.
+Benefits:
+Microsecond latency
+Reduced reads
+
+37. What are Global Tables?
+------------------------------------------------------------
+Multi-region replicated tables.
+
+Benefits:
+High availability
+Disaster recovery
+Low latency
+
+38. Global Tables Use Case
+------------------------------------------------------------
+Applications with users across multiple regions.
+
+39. Can DynamoDB Export Data?
+------------------------------------------------------------
+Yes.
+Exports to:
+S3
+
+40. Can S3 Data Be Imported?
+------------------------------------------------------------
+Yes.
+Supported formats:
+CSV
+JSON
+
+41. What Causes Throttling?
+------------------------------------------------------------
+Provisioned capacity exceeded.
+
+42. How Do You Prevent Hot Partitions?
+------------------------------------------------------------
+Use:
+
+High-cardinality partition keys
+Randomized keys
+
+43. Item Size Limit
+------------------------------------------------------------
+Maximum:
+400 KB
+
+44. Maximum Partition Key Size
+------------------------------------------------------------
+2048 bytes
+
+45. Maximum Sort Key Size
+------------------------------------------------------------
+1024 bytes
+
+46. Read Throttling Occurs. Why?
+------------------------------------------------------------
+Possible reasons:
+Low RCU
+Hot partition
+
+47. High Latency. What Will You Check?
+------------------------------------------------------------
+Partition design
+Query patterns
+DAX cache
+
+48. Query Returning No Results. Why?
+------------------------------------------------------------
+Check:
+
+Partition key value
+Index selection
+Region
+
+49. Explain Session Management Architecture
+------------------------------------------------------------
+User Login
+      ↓
+API Gateway
+      ↓
+Lambda
+      ↓
+DynamoDB
+      ↓
+TTL Deletes Session Automatically
+
+50. Explain Your DynamoDB Project
+------------------------------------------------------------
+Example Answer:
+"We used DynamoDB for storing user sessions and application metadata. Lambda functions accessed DynamoDB through IAM roles. 
+Streams triggered Lambda functions for event processing, and Global Tables provided multi-region availability."
+
+Frequently Asked Rapid-Fire Questions
+------------------------------------------------------------
+Maximum Item Size
+400 KB
+
+PITR Retention
+35 days
+
+Cache Service
+DAX
+
+Stream Events
+INSERT
+MODIFY
+REMOVE
+
+Faster Operation
+Query
+
+Slower Operation
+Scan
+
+Multi-region Feature
+Global Tables
+
+Automatic Item Deletion
+TTL
+
+Trigger Service
+Lambda

@@ -1,0 +1,620 @@
+Kubernetes Full Interview Questions & Answers
+-------------------------------------------------------
+What is Kubernetes?
+-------------------------------------
+Kubernetes (K8s) is an open-source container orchestration platform used to automate:
+Container deployment
+Scaling
+Load balancing
+Self-healing
+Service discovery
+
+Originally developed by Google and now maintained by the Cloud Native Computing Foundation.
+
+1. What is Container Orchestration?
+-------------------------------------
+Container orchestration automates:
+Deployment
+Scaling
+Networking
+Monitoring
+Management of containers
+
+2. Why Kubernetes?
+-------------------------------------
+Benefits
+Auto-scaling
+Self-healing
+Load balancing
+Rolling updates
+Service discovery
+High availability
+
+3. What Problems Does Kubernetes Solve?
+---------------------------------------
+Managing thousands of containers
+High availability
+Resource optimization
+Application scaling
+Automated deployments
+
+4. What is a Kubernetes Cluster?
+-------------------------------------
+A Kubernetes cluster consists of:
+Control Plane (Master)
+        ↓
+Worker Nodes
+        ↓
+Pods
+
+5. Explain Kubernetes Architecture
+-------------------------------------
+Control Plane Components
+API Server
+Scheduler
+Controller Manager
+etcd
+Worker Node Components
+Kubelet
+Kube Proxy
+Container Runtime
+
+6. What is API Server?
+-------------------------------------
+The API Server is the central management component of Kubernetes.
+Functions:
+Accepts API requests
+Validates requests
+Updates cluster state
+
+7. What is etcd?
+-------------------------------------
+etcd is a distributed key-value database used to store cluster configuration and state.
+
+8. What is Scheduler?
+-------------------------------------
+The Scheduler decides which node should run a pod.
+Factors:
+CPU
+Memory
+Affinity rules
+Resource availability
+
+9. What is Controller Manager?
+-------------------------------------
+Maintains desired cluster state.
+Examples:
+Deployment Controller
+Node Controller
+ReplicaSet Controller
+
+10. What is Kubelet?
+-------------------------------------
+Kubelet is an agent running on each node.
+Responsibilities:
+Pod management
+Container health monitoring
+Communication with API Server
+
+11. What is Kube Proxy?
+-------------------------------------
+Handles networking and service routing between pods.
+
+12. What is a Pod?
+-------------------------------------
+A Pod is the smallest deployable unit in Kubernetes.
+A Pod may contain:
+One container
+Multiple containers
+
+13. Why Pods Instead of Containers?
+-------------------------------------
+Pods provide:
+Shared networking
+Shared storage
+Container grouping
+
+14. Create a Pod
+-------------------------------------
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+
+Apply:
+kubectl apply -f pod.yaml
+
+15. View Pods
+-------------------------------------
+kubectl get pods
+
+16. Describe Pod
+-------------------------------------
+kubectl describe pod nginx-pod
+
+17. Delete Pod
+-------------------------------------
+kubectl delete pod nginx-pod
+
+18. What is ReplicaSet?
+-------------------------------------
+ReplicaSet ensures a specified number of pod replicas are always running.
+Example:
+replicas: 3
+
+19. Why Use ReplicaSet?
+-------------------------------------
+High availability
+Fault tolerance
+Auto-recovery
+
+20. What is Deployment?
+-------------------------------------
+A Deployment manages:
+ReplicaSets
+Rolling updates
+Rollbacks
+
+21. Deployment Example
+-------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  replicas: 3
+
+  selector:
+    matchLabels:
+      app: nginx
+
+  template:
+    metadata:
+      labels:
+        app: nginx
+
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+
+22. Create Deployment
+-------------------------------------
+kubectl apply -f deployment.yaml
+
+23. Scale Deployment
+-------------------------------------
+kubectl scale deployment nginx --replicas=5
+
+24. Check Deployments
+-------------------------------------
+kubectl get deployments
+
+25. Rollout Status
+-------------------------------------
+kubectl rollout status deployment/nginx
+
+26. Rollback Deployment
+-------------------------------------
+kubectl rollout undo deployment/nginx
+
+27. What is a Service?
+-------------------------------------
+A Service provides a stable endpoint for Pods.
+
+28. Types of Services
+-------------------------------------
+ClusterIP
+Internal communication.
+NodePort
+Accessible via node IP and port.
+LoadBalancer
+External load balancing.
+ExternalName
+Maps to external DNS.
+
+29. ClusterIP Example
+-------------------------------------
+type: ClusterIP
+
+30. NodePort Example
+-------------------------------------
+type: NodePort
+Access:
+NodeIP:30000
+
+31. LoadBalancer Example
+-------------------------------------
+type: LoadBalancer
+Used in cloud environments.
+
+32. View Services
+-------------------------------------
+kubectl get svc
+
+33. What is Namespace?
+-------------------------------------
+Namespaces logically separate resources.
+Examples:
+dev
+test
+prod
+
+34. Create Namespace
+-------------------------------------
+kubectl create namespace dev
+
+35. View Namespaces
+-------------------------------------
+kubectl get namespaces
+
+36. What is ConfigMap?
+-------------------------------------
+Stores non-sensitive configuration data.
+
+Example:
+data:
+  APP_ENV: production
+  
+37. What is Secret?
+-------------------------------------
+Stores sensitive data such as:
+Passwords
+Tokens
+API keys
+
+38. Create Secret
+-------------------------------------
+kubectl create secret generic db-secret \
+--from-literal=password=admin123
+
+39. Difference Between ConfigMap and Secret
+---------------------------------------------------
+ConfigMap	          Secret
+Non-sensitive	      Sensitive
+Plain text	          Base64 encoded
+
+40. What is Volume?
+-------------------------------------
+Volumes provide persistent storage for Pods.
+
+41. Why Use Volumes?
+-------------------------------------
+Pods are ephemeral.
+Volumes preserve:
+Database data
+Logs
+Uploads
+
+42. Types of Volumes
+-------------------------------------
+EmptyDir
+HostPath
+PersistentVolume
+PersistentVolumeClaim
+
+43. What is Persistent Volume (PV)?
+-------------------------------------
+Cluster storage resource.
+
+44. What is Persistent Volume Claim (PVC)?
+-----------------------------------------
+Request for storage by applications.
+
+45. Explain Kubernetes Networking
+-------------------------------------
+Every Pod gets:
+Unique IP
+Internal communication capability
+
+46. What is Ingress?
+-------------------------------------
+Ingress manages external HTTP/HTTPS access.
+
+47. Benefits of Ingress
+-------------------------------------
+Single entry point
+SSL termination
+Path routing
+
+48. What is Network Policy?
+-------------------------------------
+Controls pod-to-pod communication.
+
+49. What is StatefulSet?
+-------------------------------------
+Used for stateful applications:
+Examples:
+MySQL
+PostgreSQL
+MongoDB
+
+50. Difference Between Deployment and StatefulSet
+--------------------------------------------------
+Deployment	         StatefulSet
+Stateless apps	     Stateful apps
+Random pod names	 Stable identities
+
+51. What is DaemonSet?
+-------------------------------------
+Runs one pod on every node.
+Examples:
+Monitoring agents
+Log collectors
+
+52. Examples of DaemonSet Usage
+-------------------------------------
+Fluentd
+Prometheus Node Exporter
+
+53. What is Job?
+-------------------------------------
+Runs a task until completion.
+Example:
+Backup
+Data migration
+
+54. What is CronJob?
+-------------------------------------
+Runs scheduled tasks.
+Example:
+schedule: "0 0 * * *"
+Runs daily at midnight.
+
+55. What are Requests and Limits?
+-------------------------------------
+Request
+Guaranteed resources.
+Limit
+Maximum resources.
+Example:
+resources:
+  requests:
+    memory: "256Mi"
+    cpu: "250m"
+
+  limits:
+    memory: "512Mi"
+    cpu: "500m"
+
+56. What Happens If Limits Are Exceeded?
+----------------------------------------
+CPU throttling
+Memory OOMKill
+
+57. What is HPA?
+-------------------------------------
+Horizontal Pod Autoscaler automatically scales pods.
+
+58. HPA Example
+-------------------------------------
+kubectl autoscale deployment nginx \
+--cpu-percent=50 \
+--min=2 \
+--max=10
+
+59. What is VPA?
+-------------------------------------
+Vertical Pod Autoscaler adjusts CPU and memory resources.
+
+
+60. What is RBAC?
+-------------------------------------
+Role-Based Access Control.
+Controls:
+Users
+Permissions
+Resource access
+
+61. What are Roles and RoleBindings?
+-------------------------------------
+Role
+Permissions definition.
+RoleBinding
+Assigns role to user/service account.
+
+62. What is Service Account?
+-------------------------------------
+Identity used by pods.
+
+63. What is Pod Security?
+-------------------------------------
+Controls pod privileges and security settings.
+
+64. How Do You Monitor Kubernetes?
+-------------------------------------
+Popular tools:
+Prometheus
+Grafana
+Metrics Server
+
+65. Check Node Usage
+-------------------------------------
+kubectl top nodes
+
+66. Check Pod Usage
+-------------------------------------
+kubectl top pods
+
+67. View Pod Logs
+-------------------------------------
+kubectl logs pod-name
+
+68. Access Pod Shell
+-------------------------------------
+kubectl exec -it pod-name -- bash
+
+69. Describe Resource
+-------------------------------------
+kubectl describe pod pod-name
+
+70. Check Events
+-------------------------------------
+kubectl get events
+
+71. Pod in CrashLoopBackOff. What Will You Check?
+-------------------------------------
+Logs
+Environment variables
+Resource limits
+Application startup
+
+72. Pod Pending State. Why?
+-------------------------------------
+Possible reasons:
+Insufficient resources
+PVC issues
+Node problems
+
+73. Kubernetes vs Docker
+-------------------------------------
+Kubernetes	           Docker
+Orchestration	       Container platform
+Scaling	Container runtime
+
+74. Can Kubernetes Run Without Docker?
+-------------------------------------
+Yes.
+Supported runtimes:
+containerd
+CRI-O
+
+75. Jenkins + Kubernetes Workflow
+-------------------------------------
+Git
+ ↓
+Jenkins
+ ↓
+Docker Build
+ ↓
+Registry
+ ↓
+Kubernetes Deployment
+
+76. What is Helm?
+-------------------------------------
+Helm is the package manager for Kubernetes.
+
+77. Benefits of Helm
+-------------------------------------
+Reusable templates
+Easy deployments
+Version control
+
+78. Helm Commands
+-------------------------------------
+Install chart:
+helm install app chart/
+List releases:
+helm list
+
+79. What is Taint?
+-------------------------------------
+Restricts pods from scheduling on nodes.
+Example:
+kubectl taint nodes node1 key=value:NoSchedule
+
+80. What is Toleration?
+-------------------------------------
+Allows pods to run on tainted nodes.
+
+81. What is Node Affinity?
+-------------------------------------
+Schedules pods based on node labels.
+
+82. What is Pod Affinity?
+-------------------------------------
+Schedules pods near other pods.
+
+83. What is Pod Anti-Affinity?
+-------------------------------------
+Prevents pods from being placed together.
+
+84. What is Operator Pattern?
+-------------------------------------
+Extends Kubernetes functionality using custom controllers.
+
+85. What is CRD?
+-------------------------------------
+Custom Resource Definition.
+Allows creation of custom Kubernetes resources.
+
+86. Explain Your Kubernetes Project
+-------------------------------------
+Example Answer:
+Application containerized using Docker
+Images stored in registry
+Deployments managed in Kubernetes
+Ingress used for routing
+Monitoring via Prometheus and Grafana
+
+87. How Do You Perform Rolling Updates?
+----------------------------------------
+kubectl set image deployment/nginx \
+nginx=nginx:latest
+
+88. How Do You Roll Back a Failed Deployment?
+---------------------------------------------
+kubectl rollout undo deployment/nginx
+
+89. How Do You Secure Secrets?
+-------------------------------------
+Kubernetes Secrets
+RBAC
+Encryption at rest
+
+90. How Do You Ensure High Availability?
+-------------------------------------------
+Multiple replicas
+Multiple nodes
+Load balancers
+Health checks
+Default Namespace
+default
+Kubernetes CLI
+kubectl
+View Nodes
+kubectl get nodes
+Cluster Information
+kubectl cluster-info
+Kubernetes Configuration File
+~/.kube/config
+Delete Deployment
+kubectl delete deployment nginx
+Pods
+Deployments
+Services
+Namespaces
+ConfigMaps
+Secrets
+Volumes
+StatefulSets
+DaemonSets
+Ingress
+RBAC
+Helm
+HPA
+Affinity/Taints
+Troubleshooting
+CI/CD Integration
+Production Cluster Management
+
+Important Kubernetes Commands Cheat Sheet
+------------------------------------------
+kubectl get pods
+kubectl get nodes
+kubectl get svc
+kubectl describe pod pod-name
+kubectl logs pod-name
+kubectl exec -it pod-name -- bash
+kubectl apply -f deployment.yaml
+kubectl delete pod pod-name
+kubectl scale deployment app --replicas=5
+kubectl rollout status deployment/app
+kubectl rollout undo deployment/app
+kubectl top pods
+kubectl top nodes

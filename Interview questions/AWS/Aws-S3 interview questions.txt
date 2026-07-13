@@ -1,0 +1,404 @@
+AWS S3 Interview Questions and Answers (Complete Guide)
+-------------------------------------------------------
+1. What is S3?
+-------------------------------------------------------
+Amazon Web Services S3 (Simple Storage Service) is an object storage service used to store and retrieve unlimited amounts of data from anywhere.
+
+Features
+Highly durable (99.999999999% durability)
+Scalable
+Secure
+Versioning support
+Lifecycle management
+Encryption support
+
+2. What is Object Storage?
+-------------------------------------------------------
+Object storage stores data as objects consisting of:
+Data
+Metadata
+Unique key
+
+Example:
+Bucket
+ ├── image1.jpg
+ ├── video.mp4
+ └── backup.zip
+ 
+3. What is a Bucket?
+-------------------------------------------------------
+A bucket is a container used to store objects in S3.
+
+Characteristics:
+Globally unique name
+Region-specific
+Unlimited objects
+
+4. What is an Object in S3?
+-------------------------------------------------------
+An object consists of:
+Data
+Metadata
+Object key
+
+Example:
+images/logo.png
+
+5. Maximum Object Size in S3?
+-------------------------------------------------------
+Single upload: 5 GB
+Multipart upload: 5 TB
+
+6. Minimum Object Size?
+-------------------------------------------------------
+0 bytes
+
+7. Maximum Bucket Size?
+-------------------------------------------------------
+Unlimited
+
+8. What are S3 Storage Classes?
+-------------------------------------------------------
+Storage Class					Use Case
+Standard						Frequently accessed data
+Intelligent-Tiering				Unknown access patterns
+Standard-IA						Infrequent access
+One Zone-IA						Single AZ storage
+Glacier Instant Retrieval		Archive with milliseconds access
+Glacier Flexible Retrieval		Long-term archive
+Glacier Deep Archive			Lowest-cost archive
+
+9. S3 Standard vs Standard-IA
+-------------------------------------------------------
+Standard					Standard-IA
+Frequent access				Infrequent access
+Higher storage cost			Lower storage cost
+No retrieval fee			Retrieval fee
+
+10. What is Intelligent-Tiering?
+-------------------------------------------------------
+Automatically moves objects between tiers based on access patterns.
+
+11. Which Storage Class Has Lowest Cost?
+-------------------------------------------------------
+Glacier Deep Archive.
+
+12. Difference Between Durability and Availability
+-------------------------------------------------------
+Durability
+Probability of data not being lost.
+
+S3 Durability:
+99.999999999% (11 9's)
+Availability
+Probability data can be accessed.
+
+S3 Standard Availability:
+99.99%
+
+13. How Does S3 Achieve High Durability?
+-------------------------------------------------------
+Data is replicated across multiple Availability Zones.
+
+14. What is Versioning?
+-------------------------------------------------------
+Versioning preserves multiple versions of an object.
+
+Benefits:
+Recovery from accidental deletion
+Protection against overwrite
+
+15. States of Versioning
+-------------------------------------------------------
+Unversioned
+Versioning Enabled
+Versioning Suspended
+
+16. Can Versioning Be Disabled?
+-------------------------------------------------------
+No.
+It can only be suspended.
+
+17. What is Lifecycle Management?
+-------------------------------------------------------
+Automatically transitions objects between storage classes or deletes them.
+
+Example:
+30 days → Standard-IA
+90 days → Glacier
+365 days → Delete
+
+18. Benefits of Lifecycle Policies
+-------------------------------------------------------
+Cost optimization
+Automatic archival
+Data retention
+
+19. How Do You Secure S3?
+Using:
+Bucket Policies
+IAM Policies
+ACLs
+Encryption
+Block Public Access
+
+20. What is Bucket Policy?
+-------------------------------------------------------
+JSON-based policy attached to a bucket.
+
+Example permissions:
+Allow read
+Allow write
+Deny access
+
+21. What are ACLs?
+-------------------------------------------------------
+Access Control Lists provide object-level permissions.
+
+22. IAM Policy vs Bucket Policy
+-------------------------------------------------------
+IAM Policy						Bucket Policy
+Attached to users/roles			Attached to bucket
+Identity-based					Resource-based
+
+23. What is Block Public Access?
+-------------------------------------------------------
+Prevents accidental public exposure of S3 buckets.
+
+24. Types of Encryption in S3
+-------------------------------------------------------
+SSE-S3 - AWS manages keys.
+
+SSE-KMS - Uses KMS-managed keys.
+
+SSE-C - Customer provides keys.
+
+Client-side Encryption
+Encryption before upload.
+
+25. Difference Between SSE-S3 and SSE-KMS
+-------------------------------------------------------
+SSE-S3						SSE-KMS
+AWS manages keys			KMS manages keys
+Lower cost					Additional KMS cost
+Less control				More control
+
+26. Data Encryption in Transit?
+-------------------------------------------------------
+Uses HTTPS/TLS.
+
+27. What is a Pre-Signed URL?
+-------------------------------------------------------
+Temporary URL providing secure access to objects.
+
+Use cases:
+File sharing
+Temporary downloads
+
+28. What is Static Website Hosting?
+-------------------------------------------------------
+S3 can host static websites containing:
+HTML
+CSS
+JavaScript
+
+29. Can S3 Host Dynamic Websites?
+-------------------------------------------------------
+No.
+Dynamic applications require:
+EC2
+Lambda
+Containers
+
+30. What is Cross-Region Replication (CRR)?
+-------------------------------------------------------
+Copies objects to buckets in another region.
+
+Use cases:
+Disaster recovery
+Compliance
+
+31. What is Same-Region Replication (SRR)?
+-------------------------------------------------------
+Replicates data within the same region.
+
+32. Requirements for Replication
+-------------------------------------------------------
+Versioning enabled
+IAM role configured
+
+33. What is Multipart Upload?
+-------------------------------------------------------
+Large files are uploaded in parts.
+
+Benefits:
+Faster uploads
+Parallel processing
+Fault tolerance
+
+34. Maximum Number of Parts?
+-------------------------------------------------------
+10,000
+
+35. What is Transfer Acceleration?
+-------------------------------------------------------
+Uses AWS edge locations to speed up uploads.
+
+36. What are S3 Event Notifications?
+-------------------------------------------------------
+Trigger actions when events occur.
+
+Targets:
+Lambda
+SNS
+SQS
+
+Example:
+Upload image → Trigger Lambda
+
+37. Common Events
+-------------------------------------------------------
+ObjectCreated
+ObjectRemoved
+
+38. What is Server Access Logging?
+-------------------------------------------------------
+Captures requests made to the bucket.
+
+39. What is CloudTrail?
+-------------------------------------------------------
+Tracks API activity on S3 resources.
+
+40. What Consistency Model Does S3 Use?
+-------------------------------------------------------
+Strong read-after-write consistency.
+
+41. What is S3 Glacier?
+-------------------------------------------------------
+Low-cost archival storage.
+
+42. Glacier Retrieval Options
+-------------------------------------------------------
+Expedited
+1–5 minutes
+
+Standard
+3–5 hours
+
+Bulk
+5–12 hours
+
+43. What is Object Lock?
+-------------------------------------------------------
+Prevents object deletion for compliance.
+
+Modes:
+Governance
+Compliance
+
+44. What is MFA Delete?
+-------------------------------------------------------
+Requires MFA for:
+Version deletion
+Versioning changes
+
+45. What are S3 Access Points?
+-------------------------------------------------------
+Provide different access policies for applications.
+
+46. What is S3 Inventory?
+-------------------------------------------------------
+Generates reports about bucket contents.
+
+47. What is Storage Lens?
+-------------------------------------------------------
+Provides visibility into storage usage and trends.
+
+48. Access Denied Error. What Will You Check?
+-------------------------------------------------------
+IAM Policy
+Bucket Policy
+ACL
+Block Public Access
+Encryption permissions
+
+49. Object Not Replicating. Why?
+-------------------------------------------------------
+Possible reasons:
+Versioning disabled
+Missing IAM role
+Replication rule issue
+
+50. Slow Uploads. What Will You Do?
+-------------------------------------------------------
+Multipart upload
+Transfer Acceleration
+Compression
+
+51. How Do You Backup EC2 Data?
+-------------------------------------------------------
+Using:
+S3 bucket
+Lifecycle policy
+Glacier archival
+
+52. How Do You Store Logs Cost Efficiently?
+-------------------------------------------------------
+Flow:
+CloudWatch Logs
+       ↓
+S3 Standard
+       ↓
+Glacier
+
+53. Explain Static Website Hosting Architecture
+-------------------------------------------------------
+User
+ ↓
+Route 53
+ ↓
+CloudFront
+ ↓
+S3 Bucket
+
+54. How Do You Secure Sensitive Files?
+-------------------------------------------------------
+SSE-KMS encryption
+Bucket policies
+Private bucket
+IAM roles
+
+55. Explain Your S3 Project
+-------------------------------------------------------
+Example Answer:
+"Stored application backups and logs in S3. Enabled versioning and lifecycle policies to move older files to Glacier. 
+Used SSE-KMS encryption and Cross-Region Replication for disaster recovery."
+
+Frequently Asked Rapid-Fire Questions
+-------------------------------------------------------
+Maximum Object Size
+5 TB
+
+Single Upload Limit
+5 GB
+
+Maximum Parts in Multipart Upload
+10,000
+
+Bucket Names Must Be
+Globally unique
+
+Cheapest Storage Class
+Glacier Deep Archive
+
+S3 Durability
+99.999999999%
+
+S3 Availability
+99.99%
+
+Can Versioning Be Disabled?
+No (only suspended)
+
+Does S3 Support Strong Consistency?
+Yes

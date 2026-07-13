@@ -1,0 +1,321 @@
+-----------------------------------
+   Introduction to Docker
+-----------------------------------
+Docker is an open-source containerization platform that allows you to package an application with all its dependencies and run it consistently across environments (dev, test, prod).
+
+Why Docker exists
+Before Docker:
+--------------------
+“It works on my machine” problem 
+Dependency conflicts
+Heavy VMs with full OS
+
+After Docker:
+--------------------
+Lightweight containers
+Same behavior everywhere
+Faster builds & deployments
+
+------------------------------------
+Container Types
+------------------------------------
+
+1. Application Containers
+-------------------------------
+These run the main application logic.
+
+Examples
+------------
+Web apps (Nginx, Apache, Tomcat)
+Backend services (Spring Boot, Node.js, Python)
+APIs and microservices
+
+Characteristics
+-----------------------
+Stateless (preferred)
+One process per container
+Scales horizontally
+Easily replaceable
+
+2. System / Infrastructure Containers
+---------------------------------------------
+Used to support the platform rather than business logic.
+
+Examples
+-------------
+Log collectors (Fluentd)
+Monitoring agents (Prometheus node exporter)
+Service mesh components
+Reverse proxies
+
+Characteristics
+-----------------------
+Long-running
+Often run with elevated permissions
+Usually deployed per host or cluster
+
+3. Database Containers
+----------------------------------
+Run stateful workloads.
+
+Examples
+----------------
+MySQL, PostgreSQL, MongoDB, Redis
+
+Characteristics
+---------------------
+Require volumes
+Stateful
+Backup & restore is critical
+Not ideal for production without orchestration
+
+4. Utility / Tool Containers
+------------------------------------
+Used for short-lived tasks.
+
+Examples
+----------------
+Backup jobs
+Migration scripts
+CI/CD steps
+CLI tools (Terraform, AWS CLI)
+
+Characteristics
+---------------------
+Short-lived
+Often run as part of pipelines
+No exposed ports
+
+Based on Lifecycle
+---------------------------------
+1. Ephemeral Containers
+--------------------------------
+Created → Used → Destroyed
+No persistent state
+Ideal for CI/CD and batch jobs
+
+Use cases
+--------------
+Jenkins build agents
+Test runners
+Temporary debugging
+
+2. Long-Running Containers
+---------------------------------
+Designed to run continuously
+Restarted automatically
+
+Use cases
+------------------
+Web servers
+Databases
+Message brokers
+
+ Based on State Management
+----------------------------- 
+1. Stateless Containers
+-----------------------------
+No data stored inside
+Easy to scale
+Preferred in microservices
+
+Example
+---------------
+API service
+Frontend apps
+
+2. Stateful Containers
+------------------------
+Store data
+Require volumes or bind mounts
+
+Example
+-------------
+Databases
+Caches with persistence
+
+Based on Execution Mode
+---------------------------------
+1. Interactive Containers
+-------------------------------------
+Used for debugging or admin tasks.
+
+Use cases
+------------
+Troubleshooting
+Testing commands
+
+2. Detached Containers
+---------------------------
+Run in background.
+
+Based on Networking Role
+--------------------------------
+1. Frontend Containers
+----------------------------
+Expose ports
+Handle user traffic
+
+Example
+--------------
+Nginx
+React frontend
+
+2. Backend Containers
+-----------------------------
+Internal communication
+No public exposure
+
+Example
+----------------
+APIs
+Databases
+
+ Based on Privileges & Security
+------------------------------------
+
+1. Privileged Containers
+-----------------------------
+Full host access
+High risk
+
+Use cases
+---------------
+Hardware access
+Special system tools
+
+2. Unprivileged Containers (Default)
+-------------------------------------
+Isolated
+Secure
+Recommended
+
+ Based on Operating System Layer
+---------------------------------
+ 1. Linux Containers
+-----------------------
+Most common
+Lightweight
+Share Linux kernel
+
+2. Windows Containers
+---------------------------
+Windows kernel-based
+Used in .NET / Windows workloads
+
+ Based on Orchestration Context
+----------------------------------
+
+Init Containers (Kubernetes)
+---------------------------------
+Run before main container
+Used for setup tasks
+
+ Sidecar Containers
+---------------------------
+Run alongside main container
+Provide supporting features
+
+Example
+-----------------
+Logging
+Monitoring
+Proxy (Istio)
+
+
+Monolith architecture
+------------------------------------
+Monolithic architecture is a single, tightly coupled application where all features (UI, business logic, database access) are built, deployed, and scaled together, making it simple initially but hard to scale and maintain.
+
+Microservices architecture
+------------------------------------
+Microservices architecture breaks the application into small, independent services, each deployable and scalable separately, improving flexibility, resilience, and faster development, but increasing operational complexity and infrastructure needs.
+
+
+
+Client-Side Applications
+-----------------------------------------------
+Run on the user’s browser or device.
+Mainly handle UI and user interactions.
+
+Examples
+-------------------------
+React, Angular, HTML/CSS
+Mobile apps
+
+Key points
+----------------------
+Executes on client machine
+Faster UI response
+Depends on backend APIs
+
+2 Server-Side Applications
+---------------------------------------
+Run on the server.
+Handle business logic, authentication, and data processing.
+
+Examples
+------------------
+Java Spring Boot, Node.js, Python
+APIs, backend services
+
+Key points
+---------------------
+Centralized processing
+More secure
+Scales independently
+
+3 Stateless Applications
+
+Do not store session data internally.
+Each request is independent.
+
+Examples
+---------------
+REST APIs
+Frontend services
+
+Key points
+----------------
+Easy to scale
+No data persistence
+Preferred in microservices
+
+4 Stateful Applications
+-------------------------------------
+Maintain data or session state across requests.
+
+Examples
+------------------
+Databases
+Caching systems (Redis)
+
+Key points
+---------------------
+Requires persistent storage
+Harder to scale
+Needs backups and recovery
+
+----------------------------------------
+container orchestrator
+----------------------------------------
+A container orchestrator is a platform that automatically manages containers across multiple machines. It handles container deployment, scaling, load balancing, networking, self-healing, and updates, ensuring applications run reliably and efficiently in distributed environments.
+
+Examples: Kubernetes, Docker Swarm, Amazon ECS.
+
+
+Docker Registry
+------------------------------------
+
+Docker Registry is a centralized storage and distribution system for Docker images. It allows users to store, version, share, and pull container images securely across environments.
+
+Types
+--------------
+Public Registry: Docker Hub
+Private Registry: AWS ECR, Azure ACR, Google GCR, self-hosted registry
+
+Key functions
+--------------------
+Image storage & versioning
+Access control & authentication
+Image distribution for CI/CD pipelines

@@ -1,0 +1,458 @@
+AWS IAM Full Interview Questions and Answers
+---------------------------------------------
+
+1. What is IAM?
+---------------------------------------------
+Amazon Web Services IAM (Identity and Access Management) is a service that helps securely manage access to AWS resources.
+
+IAM allows you to:
+Create users and groups
+Assign permissions
+Control authentication and authorization
+Implement least privilege access
+
+2. Why is IAM Used?
+---------------------------------------------
+IAM provides:
+Authentication (Who are you?)
+Authorization (What can you do?)
+Security
+Access management
+Role-based permissions
+
+3. What are the Main Components of IAM?
+---------------------------------------------
+Users
+Groups
+Roles
+Policies
+
+4. What is an IAM User?
+---------------------------------------------
+An IAM user represents an individual person or application that needs access to AWS.
+
+Example:
+Developer1
+Admin1
+AutomationUser
+
+5. What is an IAM Group?
+---------------------------------------------
+A collection of IAM users with common permissions.
+
+Example:
+Developers
+Admins
+QA Team
+
+Benefits:
+Simplifies permission management
+Reduces administration effort
+
+6. What is an IAM Role?
+---------------------------------------------
+An IAM role provides temporary permissions to trusted entities.
+
+Used by:
+EC2
+Lambda
+ECS
+Cross-account access
+
+7. Difference Between User and Role
+---------------------------------------------
+IAM User						IAM Role
+Permanent credentials			Temporary credentials
+For people/applications			For AWS services
+Password/Access keys			STS credentials
+
+8. What is an IAM Policy?
+---------------------------------------------
+A JSON document that defines permissions.
+
+Example:
+
+{
+ "Version":"2012-10-17",
+ "Statement":[
+   {
+     "Effect":"Allow",
+     "Action":"s3:GetObject",
+     "Resource":"*"
+   }
+ ]
+}
+
+9. Components of an IAM Policy
+---------------------------------------------
+Version
+Statement
+Effect
+Action
+Resource
+Condition
+
+10. What are the Types of IAM Policies?
+---------------------------------------------
+Managed Policies
+Created and managed separately.
+
+Examples:
+AdministratorAccess
+AmazonS3ReadOnlyAccess
+Inline Policies
+Embedded directly into a user, role, or group.
+
+11. AWS Managed Policy vs Customer Managed Policy
+-------------------------------------------------
+AWS Managed				Customer Managed
+Created by AWS			Created by customer
+Cannot modify			Fully customizable
+
+12. What are Inline Policies?
+---------------------------------------------
+Policies attached directly to one identity.
+
+Cannot be shared.
+
+13. What is Authentication?
+---------------------------------------------
+Verifying identity.
+
+Examples:
+Username/password
+Access keys
+MFA
+
+14. What is Authorization?
+---------------------------------------------
+Determines allowed actions after authentication.
+
+15. What is MFA?
+---------------------------------------------
+Multi-Factor Authentication provides additional security.
+
+Examples:
+Google Authenticator
+Hardware token
+
+16. Why Enable MFA?
+---------------------------------------------
+Protects against:
+Password theft
+Unauthorized access
+
+17. What are Access Keys?
+---------------------------------------------
+Programmatic credentials consisting of:
+Access Key ID
+Secret Access Key
+Used with:
+CLI
+SDK
+APIs
+
+18. Best Practices for Access Keys
+---------------------------------------------
+Rotate regularly
+Avoid hardcoding
+Use IAM roles instead
+Store in Secrets Manager
+
+19. Difference Between Password and Access Key
+---------------------------------------------
+Password				Access Key
+Console access			API access
+Human login				Programmatic access
+
+20. Why Use IAM Roles Instead of Access Keys?
+Benefits:
+Temporary credentials
+Better security
+Automatic rotation
+
+21. Common IAM Roles
+---------------------------------------------
+EC2 Role
+Lambda Role
+ECS Task Role
+Cross-account Role
+
+22. What is a Trust Relationship?
+---------------------------------------------
+Defines who can assume a role.
+
+Example:
+{
+ "Effect":"Allow",
+ "Principal":{
+   "Service":"ec2.amazonaws.com"
+ },
+ "Action":"sts:AssumeRole"
+}
+
+23. What is AWS STS?
+---------------------------------------------
+Security Token Service provides temporary credentials.
+
+Benefits:
+Short-lived access
+Enhanced security
+
+24. What is AssumeRole?
+---------------------------------------------
+Allows one entity to temporarily assume another role.
+
+25. Explicit Allow vs Explicit Deny
+---------------------------------------------
+Allow				Deny
+Grants access		Blocks access
+
+Explicit Deny always overrides Allow.
+
+26. What is Least Privilege Principle?
+---------------------------------------------
+Grant only required permissions.
+
+Example:
+Instead of:
+"Action":"*"
+
+Use:
+"Action":"s3:GetObject"
+
+27. How are Permissions Evaluated?
+---------------------------------------------
+Order:
+Explicit Deny
+Explicit Allow
+Implicit Deny
+
+28. Identity-Based Policy vs Resource-Based Policy
+--------------------------------------------------
+Identity Policy	Resource Policy
+Attached to users/roles	Attached to resources
+IAM controlled	Resource controlled
+
+Examples:
+S3 Bucket Policy
+SNS Topic Policy
+
+29. What are Conditions in Policies?
+---------------------------------------------
+Conditions provide fine-grained control.
+
+Example:
+"Condition":{
+ "IpAddress":{
+  "aws:SourceIp":"192.168.1.0/24"
+ }
+}
+
+30. Common Condition Keys
+---------------------------------------------
+aws:SourceIp
+aws:CurrentTime
+aws:MultiFactorAuthPresent
+
+31. What is Federation?
+---------------------------------------------
+Allows external users to access AWS.
+
+Examples:
+Active Directory
+Google
+Okta
+
+32. Benefits of Federation
+---------------------------------------------
+Single Sign-On (SSO)
+No separate IAM users
+Centralized management
+
+33. What is a Permission Boundary?
+---------------------------------------------
+Defines maximum permissions an IAM entity can receive.
+
+34. Why Use Permission Boundaries?
+---------------------------------------------
+Prevent privilege escalation.
+
+35. What is SCP?
+---------------------------------------------
+Service Control Policy in AWS Organizations limits permissions for accounts.
+
+36. SCP vs IAM Policy
+---------------------------------------------
+SCP							IAM Policy
+Account-level restriction	Identity-level permission
+
+37. IAM Best Practices
+---------------------------------------------
+Enable MFA
+Use roles instead of access keys
+Follow least privilege
+Rotate credentials
+Avoid root account usage
+
+38. Why Avoid Root User?
+---------------------------------------------
+Root user has unrestricted access.
+
+Use only for:
+Account setup
+Billing changes
+
+39. How Do You Secure IAM?
+---------------------------------------------
+MFA
+Strong passwords
+Access Analyzer
+Credential rotation
+
+40. What is IAM Access Analyzer?
+---------------------------------------------
+Identifies resources shared externally.
+
+41. Access Denied Error. What Will You Check?
+---------------------------------------------
+IAM policy
+SCP
+Resource policy
+Explicit deny
+Trust relationship
+
+42. User Cannot Access S3. Why?
+---------------------------------------------
+Possible reasons:
+Missing permission
+Bucket policy deny
+SCP restriction
+
+43. EC2 Cannot Access S3. Why?
+---------------------------------------------
+Check:
+IAM role attached
+Trust policy
+S3 permissions
+
+44. AssumeRole Failed. Why?
+---------------------------------------------
+Possible reasons:
+Missing trust relationship
+Missing sts:AssumeRole permission
+
+45. How Do You Give EC2 Access to S3?
+---------------------------------------------
+Steps:
+Create IAM role.
+Attach S3 policy.
+Attach role to EC2 instance.
+
+46. Explain Cross-Account Access
+---------------------------------------------
+Account A
+   ↓ AssumeRole
+Account B
+
+Used for:
+Shared resources
+Multi-account architecture
+
+47. Explain Your IAM Project
+---------------------------------------------
+Example Answer:
+"I implemented IAM roles for EC2 and Lambda, enforced least privilege access, enabled MFA, and used 
+customer-managed policies for developers and administrators."
+
+48. How Do You Manage 100 Developers?
+---------------------------------------------
+Using:
+IAM Groups
+Customer-managed policies
+MFA
+Permission boundaries
+
+49. Example Read-Only S3 Policy
+---------------------------------------------
+{
+ "Version":"2012-10-17",
+ "Statement":[
+ {
+ "Effect":"Allow",
+ "Action":[
+ "s3:GetObject"
+ ],
+ "Resource":"*"
+ }
+ ]
+}
+
+50. Example Full EC2 Access Policy
+---------------------------------------------
+{
+ "Version":"2012-10-17",
+ "Statement":[
+ {
+ "Effect":"Allow",
+ "Action":"ec2:*",
+ "Resource":"*"
+ }
+ ]
+}
+
+Frequently Asked Rapid-Fire Questions
+---------------------------------------------
+Maximum Groups for a User
+10
+
+Explicit Deny Overrides?
+Allow
+
+(No, Explicit Deny overrides Allow.)
+
+Temporary Credentials Service
+STS
+
+Service Used for MFA
+IAM
+
+Root User Permissions
+Full access
+
+Access Keys Used For
+Programmatic access
+
+Console Login Uses
+Username and password
+
+Role Credentials Are
+Temporary
+
+51. What is IAM Access Advisor?
+---------------------------------------------
+Shows last accessed services and helps remove unused permissions.
+
+52. What is Credential Report?
+---------------------------------------------
+Provides information about:
+
+Password usage
+MFA status
+Access key age
+
+53. What is AWS SSO (IAM Identity Center)?
+---------------------------------------------
+Centralized identity management for multiple AWS accounts.
+
+54. What is Session Duration in IAM Role?
+---------------------------------------------
+Default:
+1 hour
+
+Maximum:
+12 hours
+
+55. What is External ID in Cross-Account Access?
+------------------------------------------------
+Used to prevent the confused deputy problem.

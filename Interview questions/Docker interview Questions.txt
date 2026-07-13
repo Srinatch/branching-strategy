@@ -1,0 +1,592 @@
+Docker Full Interview Questions & Answers
+-------------------------------------------------
+What is Docker?
+-------------------
+Docker is an open-source containerization platform that allows developers to package applications 
+and their dependencies into lightweight, portable containers.
+
+Benefits
+--------------
+Portability
+Faster deployment
+Consistent environments
+Resource efficiency
+Scalability
+
+1. What is Containerization?
+------------------------------
+Containerization is a method of packaging an application along with its dependencies so it can run consistently across different environments.
+
+2. What is a Container?
+--------------------------
+A container is a lightweight, standalone executable package that contains:
+
+Application code
+Runtime
+Libraries
+Dependencies
+
+3. What is the Difference Between a Container and a Virtual Machine?
+--------------------------------------------------------------------
+Container	                     Virtual Machine
+Shares host OS kernel	         Has its own OS
+Lightweight	                     Heavyweight
+Fast startup	                 Slow startup
+Less resource usage	             More resource usage
+
+Architecture
+-------------------
+Docker Container
+----------------
+App
+Libraries
+Docker Engine
+Host OS
+Virtual Machine
+---------------
+App
+Libraries
+Guest OS
+Hypervisor
+Host OS
+
+4. What is Docker Engine?
+-----------------------------
+Docker Engine is the core component that runs and manages containers.
+
+Components
+----------
+Docker Daemon (dockerd)
+Docker CLI
+REST API
+
+5. What is Docker Daemon?
+----------------------------
+The Docker daemon is a background service responsible for:
+Building images
+Running containers
+Managing networks
+Managing volumes
+
+6. What is Docker Hub?
+---------------------------
+Docker Hub is a cloud repository used to store and share Docker images.
+
+7. Explain Docker Architecture
+-------------------------------
+Client
+   |
+Docker CLI
+   |
+Docker Daemon
+   |
+Images | Containers | Networks | Volumes
+
+8. What Happens When You Run a Docker Container?
+--------------------------------------------------
+Example:
+docker run nginx
+
+Steps:
+Checks local image
+Pulls image if unavailable
+Creates container
+Starts container
+Attaches process
+
+9. What is a Docker Image?
+----------------------------
+A Docker image is a read-only template used to create containers.
+
+10. What is the Difference Between Image and Container?
+---------------------------------------------------------
+Image	           Container
+Blueprint	      Running instance
+Read-only	      Read-write
+Static	          Dynamic
+
+11. How to Pull an Image?
+-----------------------------
+docker pull nginx
+
+12. List Images
+------------------
+docker images
+
+13. Remove Image
+---------------------
+docker rmi image_name
+
+14. What is Image Layering?
+-------------------------------
+Docker images are built in layers.
+
+Example:
+Ubuntu Layer
+Python Layer
+Application Layer
+
+Benefits:
+Reusability
+Faster builds
+Smaller storage
+
+15. What is a Base Image?
+-----------------------------
+A starting image used for creating custom images.
+
+Examples:
+Ubuntu
+Alpine Linux
+CentOS
+
+16. Run a Container
+-----------------------
+docker run nginx
+
+17. Run Container in Detached Mode
+-----------------------------------
+docker run -d nginx
+
+18. List Running Containers
+----------------------------
+docker ps
+
+19. List All Containers
+--------------------------
+docker ps -a
+
+20. Stop Container
+-----------------------
+docker stop container_id
+
+21. Start Container
+-----------------------
+docker start container_id
+
+22. Restart Container
+------------------------
+docker restart container_id
+
+23. Remove Container
+--------------------------
+docker rm container_id
+
+24. View Logs
+-------------------
+docker logs container_id
+
+25. Access Container Shell
+----------------------------
+docker exec -it container_id bash
+
+26. What is Dockerfile?
+----------------------------
+A Dockerfile is a text file containing instructions for building Docker images.
+
+27. Common Dockerfile Instructions
+------------------------------------
+Instruction	 Purpose
+FROM		 Base image
+RUN	    	 Execute command
+COPY		 Copy files
+ADD	    	 Add files
+WORKDIR		 Set working directory
+CMD	     	 Default command
+ENTRYPOINT	 Main executable
+ENV	     	 Environment variable
+
+28. Example Dockerfile
+-------------------------
+FROM ubuntu
+WORKDIR /app
+COPY . .
+RUN apt-get update
+CMD ["echo","Hello Docker"]
+
+29. Build Docker Image
+----------------------------
+docker build -t myapp .
+
+30. Difference Between COPY and ADD
+--------------------------------------
+COPY	           ADD
+Copies files	   Copy + URL support
+Preferred	       Additional features
+
+31. Difference Between CMD and ENTRYPOINT
+-----------------------------------------
+CMD	                ENTRYPOINT
+Default command	    Fixed executable
+Can be overridden	Harder to override
+
+Example:
+CMD ["python","app.py"]
+ENTRYPOINT ["python"]
+
+32. What is Docker Networking?
+--------------------------------
+Allows communication between:
+Containers
+Host machine
+External systems
+
+33. Types of Docker Networks
+--------------------------------
+Bridge:
+Default network.
+Host:
+Uses host networking.
+None:
+No networking.
+Overlay:
+Multi-host networking.
+Macvlan:
+Assigns MAC address.
+
+34. Create Network
+------------------------------
+docker network create mynetwork
+
+35. List Networks
+----------------------------------
+docker network ls
+
+36. Inspect Network
+----------------------------------
+docker network inspect mynetwork
+
+37. Connect Container to Network
+----------------------------------
+docker network connect mynetwork container_name
+
+38. What is a Docker Volume?
+----------------------------------
+Volumes provide persistent storage for containers.
+
+39. Why Use Volumes?
+----------------------------------
+Containers are temporary.
+
+Volumes preserve:
+Database files
+Logs
+Uploads
+
+40. Create Volume
+----------------------------------
+docker volume create myvolume
+
+41. List Volumes
+----------------------------------
+docker volume ls
+
+42. Mount Volume
+----------------------------------
+docker run -v myvolume:/app/data nginx
+
+43. Difference Between Volume and Bind Mount
+--------------------------------------------
+Volume	             Bind Mount
+Managed by Docker	 Managed by Host
+Portable	         Host dependent
+
+44. What is Docker Compose?
+----------------------------------
+Docker Compose manages multi-container applications using YAML files.
+
+45. Why Use Docker Compose?
+----------------------------------
+Multiple services
+Single command deployment
+Easy networking
+
+46. Example docker-compose.yml
+----------------------------------
+version: '3'
+services:
+  web:
+    image: nginx
+
+  db:
+    image: mysql
+	
+47. Start Compose Services
+----------------------------------
+docker-compose up
+Detached:
+docker-compose up -d
+
+48. Stop Compose Services
+----------------------------------
+docker-compose down
+
+49. What is Docker Registry?
+----------------------------------
+A service that stores Docker images.
+
+Examples:
+Docker Hub
+Private Registry
+
+50. Push Image to Registry
+----------------------------------
+docker push username/image
+
+51. Login to Registry
+----------------------------------
+docker login
+
+52. Docker Security Best Practices
+----------------------------------
+Use trusted images
+Scan vulnerabilities
+Run non-root users
+Limit capabilities
+Use secrets management
+
+53. What is Docker Content Trust?
+----------------------------------
+Ensures image authenticity using digital signatures.
+
+54. What are Docker Secrets?
+----------------------------------
+Securely manage passwords and certificates.
+
+55. What is Docker Swarm?
+----------------------------------
+Docker's native container orchestration solution.
+
+56. Initialize Swarm
+----------------------------------
+docker swarm init
+
+57. What is a Service?
+----------------------------------
+A service defines how containers should run in Swarm.
+
+58. Scale Service
+----------------------------------
+docker service scale web=5
+
+59. What is Multi-stage Build?
+----------------------------------
+Reduces image size by separating build and runtime stages.
+
+Example:
+FROM maven AS build
+FROM openjdk
+
+60. What is Docker Cache?
+----------------------------------
+Docker reuses image layers to speed up builds.
+
+61. How to Reduce Docker Image Size?
+------------------------------------
+Use Alpine images
+Multi-stage builds
+Remove unnecessary files
+Minimize layers
+
+62. What is Docker Inspect?
+----------------------------------
+docker inspect container_id
+Provides detailed information.
+
+63. What is Docker Stats?
+----------------------------------
+docker stats
+Shows resource usage.
+
+64. Difference Between RUN, CMD, and ENTRYPOINT
+----------------------------------------------
+RUN	             CMD	          ENTRYPOINT
+Build time	    Runtime default	  Runtime executable
+
+65. Docker vs Kubernetes
+-----------------------------
+Docker	                           Kubernetes
+Container platform	             Orchestration platform
+Runs containers	                 Manages containers
+
+66. Can Kubernetes Run Without Docker?
+----------------------------------------
+Yes. Kubernetes supports runtimes such as:
+containerd
+CRI-O
+
+67. Docker with Jenkins
+----------------------------------
+Typical Flow:
+Git
+ ↓
+Jenkins
+ ↓
+Build Docker Image
+ ↓
+Push Registry
+ ↓
+Deploy
+
+68. Example Jenkins Docker Stage
+----------------------------------
+stage('Docker Build') {
+    steps {
+        sh 'docker build -t app .'
+    }
+}
+
+69. Container Exits Immediately. Why?
+----------------------------------------
+Possible reasons:
+Main process finished
+Application crash
+Wrong command
+
+70. Port Mapping Example
+----------------------------------
+docker run -p 8080:80 nginx
+Meaning:
+Host Port 8080
+       ↓
+Container Port 80
+
+71. How to Clean Unused Resources?
+----------------------------------
+docker system prune
+
+72. Remove All Stopped Containers
+----------------------------------
+docker container prune
+
+73. Check Container Resource Usage
+----------------------------------
+docker stats
+
+74. Application Works Locally But Not in Docker. What Will You Check?
+------------------------------------------------------------------------
+Port mapping
+Environment variables
+Logs
+Network settings
+File permissions
+
+75. How Do You Debug a Running Container?
+--------------------------------------------
+docker exec -it container_id bash
+Then:
+Check logs
+Verify processes
+Verify files
+
+76. How Do You Persist Database Data?
+--------------------------------------
+Using Docker volumes:
+
+docker run -v db_data:/var/lib/mysql mysql
+
+77. How Do Containers Communicate?
+----------------------------------
+Using:
+Docker network
+Container DNS names
+Service discovery
+
+78. Docker Default Network
+----------------------------------
+bridge
+
+79. Docker Default Registry
+----------------------------------
+Docker Hub
+
+80. Command to View Docker Version
+----------------------------------
+docker --version
+
+81. Docker Configuration File
+----------------------------------
+Linux:
+/etc/docker/daemon.json
+
+82. View Container Processes
+----------------------------------
+docker top container_id
+
+83. Copy Files Between Host and Container
+----------------------------------------------
+docker cp file.txt container:/tmp
+
+84. Show Docker System Information
+----------------------------------
+docker info
+
+85. Remove Unused Images
+----------------------------------
+docker image prune
+
+86. Explain Your Docker Project
+----------------------------------
+Example Answer:
+Application source in Git
+Jenkins pipeline builds image
+Push image to registry
+Deploy to Kubernetes
+Monitor containers
+
+87. Why Did You Use Docker?
+----------------------------------
+Environment consistency
+Faster deployments
+Scalability
+Easy rollback
+
+88. How Do You Deploy Dockerized Applications?
+-------------------------------------------------
+Build image
+Push image
+Pull image on server
+Run container
+Configure networking
+
+89. What Challenges Did You Face?
+----------------------------------
+Image size issues
+Networking problems
+Volume management
+Security concerns
+
+90. How Did You Optimize Docker Builds?
+---------------------------------------------
+Multi-stage builds
+Layer caching
+Smaller base images
+Dependency optimization
+Docker architecture
+Images vs Containers
+Dockerfile
+Volumes
+Networks
+Docker Compose
+Multi-stage builds
+Security
+Docker Swarm
+Kubernetes integration
+CI/CD integration
+Performance tuning
+
+Important Docker Commands Cheat Sheet
+-------------------------------------
+docker pull nginx
+docker images
+docker run nginx
+docker ps
+docker stop container_id
+docker rm container_id
+docker build -t app .
+docker exec -it container_id bash
+docker logs container_id
+docker volume ls
+docker network ls
+docker-compose up -d
+docker system prune

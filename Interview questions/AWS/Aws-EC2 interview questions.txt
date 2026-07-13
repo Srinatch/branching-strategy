@@ -1,0 +1,423 @@
+AWS EC2 Interview Questions and Answers (Complete Guide)
+-------------------------------------------------------
+1. What is EC2?
+-------------------------------------------------------
+Amazon Web Services EC2 (Elastic Compute Cloud) is a web service that provides scalable virtual servers (instances) in the cloud.
+Features
+Resizable compute capacity
+Pay-as-you-go pricing
+Multiple instance types
+High availability
+Auto Scaling support
+
+2. What are the Main Components of EC2?
+-------------------------------------------------------
+AMI (Amazon Machine Image)
+Instance Types
+EBS Volumes
+Security Groups
+Key Pairs
+Elastic IP
+Network Interfaces
+
+3. What is an AMI?
+-------------------------------------------------------
+An AMI (Amazon Machine Image) is a template used to launch EC2 instances.
+
+It contains:
+Operating System
+Application Server
+Configuration settings
+
+Examples:
+Amazon Linux
+Ubuntu
+Red Hat
+Windows
+
+4. What is an EC2 Instance?
+-------------------------------------------------------
+An EC2 instance is a virtual machine running in AWS.
+
+5. Types of EC2 Instances
+-------------------------------------------------------
+Family		Purpose
+T Series	General purpose
+M Series	Balanced workloads
+C Series	Compute optimized
+R Series	Memory optimized
+P Series	GPU workloads
+I Series	Storage optimized
+
+6. Explain T2 and T3 Instances
+-------------------------------------------------------
+Burstable performance instances suitable for:
+
+Web servers
+Small databases
+Development environments
+
+Example:
+t2.micro
+t3.micro
+
+7. Difference Between T2 and T3
+-------------------------------------------------------
+T2						T3
+Older generation		Newer generation
+Lower performance		Better performance
+Less cost efficient		More cost efficient
+
+8. Explain EC2 Instance States
+-------------------------------------------------------
+Pending
+ ↓
+Running
+ ↓
+Stopping
+ ↓
+Stopped
+ ↓
+Terminated
+
+9. Difference Between Stop and Terminate
+-------------------------------------------------------
+Stop					Terminate
+Can restart later		Permanently deleted
+EBS persists			Root volume may be deleted
+Instance ID retained	Instance ID lost
+
+10. Difference Between Reboot and Stop
+-------------------------------------------------------
+Reboot
+Same hardware
+Same public IP (if Elastic IP)
+Stop
+Instance may move to different host
+Temporary public IP changes
+
+11. What is EBS?
+-------------------------------------------------------
+Amazon Web Services EBS (Elastic Block Store) provides persistent block storage for EC2 instances.
+
+12. Types of EBS Volumes
+-------------------------------------------------------
+Volume 	Type					Usage
+gp3		General purpose 		SSD
+io2		High-performance 		SSD
+st1		Throughput optimized 	HDD
+sc1		Cold 					HDD
+
+13. Difference Between EBS and Instance Store
+-------------------------------------------------------
+EBS						Instance Store
+Persistent				Temporary
+Network attached		Physically attached
+Snapshot support		No snapshot
+
+14. What is an EBS Snapshot?
+-------------------------------------------------------
+A backup of an EBS volume stored in S3.
+
+15. Can You Attach One EBS Volume to Multiple Instances?
+--------------------------------------------------------
+Multi-Attach is supported only with io1/io2 volumes and specific instance types.
+
+16. What is an Elastic IP?
+-------------------------------------------------------
+A static public IPv4 address assigned to EC2 instances.
+
+17. Why Use Elastic IP?
+-------------------------------------------------------
+Static IP
+Disaster recovery
+Easy remapping
+
+18. What is ENI?
+-------------------------------------------------------
+Elastic Network Interface provides:
+Private IP
+Public IP
+Security groups
+MAC address
+
+19. Difference Between Public IP and Elastic IP
+-------------------------------------------------------
+Public IP							Elastic IP
+Changes after stop/start			Static
+Free while running					Limited quantity
+
+20. What is a Security Group?
+-------------------------------------------------------
+Security Group acts as a virtual firewall for EC2 instances.
+
+21. Characteristics of Security Groups
+-------------------------------------------------------
+Stateful
+Allow rules only
+Instance level
+
+22. Difference Between Security Group and NACL
+-------------------------------------------------------
+Security Group					NACL
+Stateful						Stateless
+Instance level					Subnet level
+Allow rules only				Allow and Deny rules
+
+23. What is a Key Pair?
+-------------------------------------------------------
+Used for secure SSH login.
+
+Contains:
+Public key
+Private key
+
+24. Default SSH Ports
+-------------------------------------------------------
+Linux: 22
+Windows RDP: 3389 
+
+25. Types of AMIs
+-------------------------------------------------------
+Public AMI
+Private AMI
+Marketplace AMI
+
+26. How Do You Create an AMI?
+-------------------------------------------------------
+Select instance
+Actions → Image → Create Image
+Launch new instance from AMI
+
+27. Benefits of AMI
+-------------------------------------------------------
+Faster deployment
+Backup
+Standardization
+
+28. Types of EC2 Pricing Models
+-------------------------------------------------------
+On-Demand
+Pay per hour/second.
+Reserved Instances
+Long-term commitment.
+Spot Instances
+Unused AWS capacity at reduced price.
+Dedicated Hosts
+Physical servers dedicated to a customer.
+
+29. What are Spot Instances?
+-------------------------------------------------------
+Low-cost instances using spare AWS capacity.
+Savings:
+Up to 90%.
+
+30. Drawback of Spot Instances
+-------------------------------------------------------
+Can be interrupted anytime.
+
+31. Reserved Instances Benefits
+-------------------------------------------------------
+Lower cost
+Predictable workloads
+
+32. What is Auto Scaling?
+-------------------------------------------------------
+Automatically adjusts the number of instances based on demand.
+
+33. Components of Auto Scaling
+-------------------------------------------------------
+Launch Template
+Auto Scaling Group
+Scaling Policies
+
+34. Types of Scaling
+-------------------------------------------------------
+Dynamic Scaling
+Based on metrics.
+Scheduled Scaling
+Based on time.
+Predictive Scaling
+Forecast-based.
+
+35. Types of Load Balancers
+-------------------------------------------------------
+Load Balancer	Layer
+ALB				Layer 7
+NLB				Layer 4
+GWLB			Layer 3
+
+36. Why Use Load Balancer?
+-------------------------------------------------------
+High availability
+Traffic distribution
+Fault tolerance
+
+37. Difference Between ALB and NLB
+-------------------------------------------------------
+ALB							NLB
+HTTP/HTTPS					TCP/UDP
+Layer 7						Layer 4
+
+38. What is CloudWatch?
+-------------------------------------------------------
+Amazon Web Services CloudWatch monitors AWS resources.
+
+39. Default CloudWatch Metrics
+-------------------------------------------------------
+CPU Utilization
+Disk Reads
+Network In/Out
+
+40. Difference Between Basic and Detailed Monitoring
+-------------------------------------------------------
+Basic				Detailed
+5 minutes			1 minute
+
+41. What is CloudWatch Alarm?
+-------------------------------------------------------
+Triggers actions based on metrics.
+Example:
+CPU > 80%.
+
+42. Types of Placement Groups
+-------------------------------------------------------
+Cluster
+Low latency.
+Spread
+Fault isolation.
+Partition
+Large distributed workloads.
+
+43. Cluster Placement Group Use Cases
+-------------------------------------------------------
+HPC applications.
+
+44. What is Instance Metadata?
+-------------------------------------------------------
+Information about the instance.
+Example:
+curl http://169.254.169.254/latest/meta-data/
+
+45. What is User Data?
+-------------------------------------------------------
+Scripts executed during instance launch.
+Example:
+#!/bin/bash
+yum install httpd -y
+systemctl start httpd
+
+46. What is EC2 Hibernate?
+-------------------------------------------------------
+Stops instance while preserving RAM contents.
+
+47. Difference Between Stop and Hibernate
+-------------------------------------------------------
+Stop		Hibernate
+RAM lost	RAM preserved
+
+48. What Happens to EBS on Termination?
+-------------------------------------------------------
+Depends on DeleteOnTermination setting.
+
+49. What is Nitro System?
+-------------------------------------------------------
+AWS virtualization platform that improves:
+Performance
+Security
+Scalability
+
+50. What is Enhanced Networking?
+-------------------------------------------------------
+Provides:
+Lower latency
+Higher throughput
+
+Using:
+ENA
+SR-IOV
+
+51. Dedicated Instance vs Dedicated Host
+-------------------------------------------------------
+Dedicated Instance	Dedicated Host
+Dedicated hardware	Entire physical server
+
+52. Unable to SSH Into EC2. What Will You Check?
+-------------------------------------------------------
+Security Group
+Key pair
+Instance state
+Route tables
+NACL rules
+
+53. Instance Not Reachable. Why?
+-------------------------------------------------------
+Possible reasons:
+CPU overload
+Security group issues
+Disk full
+Route table problems
+
+54. High CPU Usage. What Will You Do?
+-------------------------------------------------------
+Check CloudWatch metrics
+Review processes
+Resize instance
+Use Auto Scaling
+
+55. EBS Volume Full. What Will You Do?
+-------------------------------------------------------
+Increase EBS size.
+Extend filesystem.
+Verify space.
+
+56. How Do You Make an EC2 Highly Available?
+-------------------------------------------------------
+Use:
+Multiple AZs
+Load Balancer
+Auto Scaling Group
+
+57. Explain Your EC2 Project
+-------------------------------------------------------
+Example Answer:
+"I deployed a three-tier application using EC2 instances behind an Application Load Balancer. Auto Scaling maintained availability, EBS volumes stored application data, and CloudWatch monitored resources."
+
+58. How Do You Secure EC2?
+-------------------------------------------------------
+Security Groups
+IAM Roles
+Encryption
+Patch updates
+Disable root login
+
+59. How Do You Backup EC2?
+-------------------------------------------------------
+Using:
+AMIs
+EBS Snapshots
+AWS Backup
+
+60. How Do You Reduce EC2 Costs?
+-------------------------------------------------------
+Reserved Instances
+Spot Instances
+Auto Scaling
+Right sizing
+
+Default Root User
+
+Linux:
+ec2-user
+ubuntu
+
+SSH Command:
+ssh -i key.pem ec2-user@public-ip
+
+View Instance Metadata
+curl http://169.254.169.254/latest/meta-data/
+
+Attach EBS Volume
+EC2 → Volumes → Attach Volume
+Resize EBS Volume
+Elastic Block Store → Modify Volume

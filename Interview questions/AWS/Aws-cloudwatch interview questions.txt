@@ -1,0 +1,430 @@
+AWS CloudWatch Full Interview Questions and Answers
+----------------------------------------------------
+1. What is Amazon CloudWatch?
+----------------------------------------------------
+Amazon Web Services CloudWatch is a monitoring and observability service used to collect, monitor, analyze, 
+and react to metrics, logs, and events from AWS resources and applications.
+
+CloudWatch helps in:
+Monitoring resources
+Collecting logs
+Creating alarms
+Triggering automated actions
+Troubleshooting applications
+
+2. Why is CloudWatch Used?
+----------------------------------------------------
+CloudWatch provides:
+Performance monitoring
+Log collection
+Alerting
+Resource utilization analysis
+Event automation
+
+3. What Can CloudWatch Monitor?
+----------------------------------------------------
+Examples:
+EC2
+EBS
+RDS
+Lambda
+S3
+Auto Scaling
+Application logs
+Custom metrics
+
+4. What are Metrics?
+----------------------------------------------------
+Metrics are time-ordered numerical data points representing resource performance.
+
+Examples:
+CPU Utilization
+Network In
+Network Out
+Disk Read Ops
+
+5. What is a Namespace?
+----------------------------------------------------
+A namespace groups metrics.
+
+Examples:
+AWS/EC2
+AWS/RDS
+AWS/S3
+Custom/MyApplication
+
+6. Default EC2 Metrics
+----------------------------------------------------
+CPUUtilization
+NetworkIn
+NetworkOut
+DiskReadBytes
+DiskWriteBytes
+
+7. Basic Monitoring vs Detailed Monitoring
+----------------------------------------------------
+Basic Monitoring		Detailed Monitoring
+5-minute interval		1-minute interval
+Default					Additional cost
+
+8. Can CloudWatch Monitor Memory Usage?
+----------------------------------------------------
+Not by default.
+Memory metrics require:
+CloudWatch Agent
+
+9. What are Custom Metrics?
+----------------------------------------------------
+User-defined metrics sent to CloudWatch.
+
+Example:
+aws cloudwatch put-metric-data
+
+10. What is Metric Resolution?
+----------------------------------------------------
+Defines the frequency of data points.
+
+Examples:
+Standard: 1 minute
+High Resolution: 1 second
+
+11. What are CloudWatch Logs?
+----------------------------------------------------
+CloudWatch Logs store and monitor application and system logs.
+
+12. Components of CloudWatch Logs
+----------------------------------------------------
+Log Group
+Container for log streams.
+Log Stream
+Sequence of log events.
+Example:
+
+Log Group
+     ↓
+Log Stream
+     ↓
+Log Events
+
+13. What Services Send Logs to CloudWatch?
+----------------------------------------------------
+EC2
+Lambda
+ECS
+VPC Flow Logs
+CloudTrail
+API Gateway
+
+14. What is Log Retention?
+----------------------------------------------------
+Defines how long logs are stored.
+
+Examples:
+7 days
+30 days
+90 days
+Never expire
+
+15. What are Log Insights?
+----------------------------------------------------
+CloudWatch Logs Insights enables querying logs.
+
+Example:
+fields @timestamp, @message
+| sort @timestamp desc
+
+16. What is a CloudWatch Alarm?
+----------------------------------------------------
+An alarm watches metrics and performs actions when thresholds are crossed.
+
+17. Alarm States
+----------------------------------------------------
+OK
+Metric within threshold.
+
+ALARM
+Threshold exceeded.
+
+INSUFFICIENT_DATA
+No data available.
+
+18. Example Alarm
+----------------------------------------------------
+CPU > 80%
+
+Action:
+Send SNS notification.
+
+19. Alarm Actions
+----------------------------------------------------
+SNS notification
+Auto Scaling
+EC2 stop/start/reboot
+Lambda invocation
+
+20. What is Composite Alarm?
+----------------------------------------------------
+Combines multiple alarms into one.
+
+Example:
+CPU Alarm
+     +
+Memory Alarm
+     ↓
+Composite Alarm
+
+21. What is CloudWatch Events?
+----------------------------------------------------
+(EventBridge successor)
+Used to trigger actions based on events.
+Examples:
+EC2 state changes
+Scheduled jobs
+S3 uploads
+
+22. What is EventBridge?
+----------------------------------------------------
+A serverless event bus service.
+
+23. Common Event Targets
+----------------------------------------------------
+Lambda
+SNS
+SQS
+Step Functions
+
+24. What is a CloudWatch Dashboard?
+----------------------------------------------------
+Custom visual dashboard displaying:
+Metrics
+Graphs
+Logs
+Alarms
+
+25. Benefits of Dashboards
+----------------------------------------------------
+Centralized monitoring
+Visualization
+Operations overview
+
+26. What is CloudWatch Agent?
+----------------------------------------------------
+Software installed on EC2 instances for collecting:
+Memory usage
+Disk usage
+Processes
+Custom logs
+
+27. Why Use CloudWatch Agent?
+----------------------------------------------------
+Default EC2 metrics do not include:
+
+RAM usage
+Disk space utilization
+Logs Agent vs Unified Agent
+Old Logs Agent	Unified Agent
+Logs only	Logs + metrics
+Deprecated	Recommended
+
+28. What is CloudWatch Synthetics?
+----------------------------------------------------
+Monitors application endpoints using canaries.
+
+Checks:
+Availability
+Response time
+APIs
+
+29. What is Contributor Insights?
+----------------------------------------------------
+Analyzes logs and finds top contributors to traffic or errors.
+
+30. What is ServiceLens?
+----------------------------------------------------
+Provides observability across:
+Metrics
+Logs
+Traces
+Integrates with X-Ray.
+
+31. Benefits of Logs Insights
+----------------------------------------------------
+Fast search
+Filtering
+Visualization
+Example Query
+fields @message
+| filter status = 500
+| sort @timestamp desc
+
+32. What is AWS X-Ray?
+----------------------------------------------------
+Distributed tracing service.
+
+Helps identify:
+Latency
+Errors
+Service dependencies
+
+33. CloudWatch + X-Ray Benefits
+----------------------------------------------------
+End-to-end monitoring
+Application troubleshooting
+
+34. How Does CloudWatch Work with Auto Scaling?
+----------------------------------------------------
+Example:
+CPU > 80%
+     ↓
+CloudWatch Alarm
+     ↓
+Auto Scaling Group
+     ↓
+Launch New Instance
+
+35. Lambda Metrics Monitored
+----------------------------------------------------
+Invocations
+Errors
+Duration
+Throttles
+
+36. Default EC2 Metrics
+----------------------------------------------------
+CPUUtilization
+NetworkIn
+NetworkOut
+
+Memory metrics require CloudWatch Agent.
+
+37. What are VPC Flow Logs?
+----------------------------------------------------
+Capture IP traffic information.
+
+Can be stored in:
+CloudWatch Logs
+S3
+
+38. How is Access Controlled?
+----------------------------------------------------
+Using:
+IAM policies
+Resource policies
+
+39. Can CloudWatch Logs Be Encrypted?
+----------------------------------------------------
+Yes.
+Using KMS keys.
+
+40. CPU Alarm Not Triggering. Why?
+----------------------------------------------------
+Possible reasons:
+
+Incorrect threshold
+Missing metric
+Alarm state delay
+
+41. EC2 Memory Metrics Missing. Why?
+----------------------------------------------------
+Memory metrics are not collected by default.
+
+Need:
+CloudWatch Agent
+
+42. Logs Not Appearing. Why?
+----------------------------------------------------
+Check:
+IAM permissions
+CloudWatch Agent
+Log group name
+
+43. No Data in Alarm. Why?
+----------------------------------------------------
+Alarm state becomes:
+INSUFFICIENT_DATA
+
+44. Explain Your CloudWatch Project
+----------------------------------------------------
+Example Answer:
+"We used CloudWatch for monitoring EC2, Lambda, and RDS. Logs were centralized in CloudWatch Logs. 
+CPU alarms triggered SNS notifications and Auto Scaling actions. Log Insights helped troubleshoot application failures."
+
+45. How Do You Monitor EC2 Memory?
+----------------------------------------------------
+Steps:
+Install CloudWatch Agent.
+Configure memory metrics.
+Send metrics to CloudWatch.
+Create alarms.
+
+46. How Do You Monitor Application Logs?
+----------------------------------------------------
+Flow:
+
+Application
+     ↓
+CloudWatch Agent
+     ↓
+CloudWatch Logs
+     ↓
+Log Insights
+
+47. How Do You Receive Notifications?
+----------------------------------------------------
+Using:
+CloudWatch Alarm
+      ↓
+SNS Topic
+      ↓
+Email/SMS
+
+48. What is Metric Math?
+----------------------------------------------------
+Allows calculations on metrics.
+
+Example:
+Error Rate = Errors / Requests
+
+49. What are Anomaly Detection Alarms?
+----------------------------------------------------
+Uses machine learning to identify abnormal behavior.
+
+50. What is Embedded Metric Format (EMF)?
+----------------------------------------------------
+Allows applications to publish structured logs with metrics.
+
+Frequently Asked Rapid-Fire Questions
+----------------------------------------------------
+Basic Monitoring Interval
+5 minutes
+
+Detailed Monitoring Interval
+1 minute
+
+High Resolution Metric
+1 second
+
+Memory Metrics Available by Default?
+No
+
+Alarm States
+OK
+ALARM
+INSUFFICIENT_DATA
+
+Log Components
+Log Group
+Log Stream
+Log Event
+
+Service for Notifications
+SNS
+
+Query Tool for Logs
+Logs Insights
+
+Event Bus Service
+EventBridge
+
+EC2 Memory Monitoring Requires
+CloudWatch Agent

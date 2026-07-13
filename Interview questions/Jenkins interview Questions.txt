@@ -1,0 +1,575 @@
+Basic Jenkins Interview Questions
+-----------------------------------------------------------------------------------------------------
+
+1. What is Continuous Integration (CI)?
+
+Continuous Integration is the practice of automatically integrating code changes 
+from multiple developers into a shared repository several times a day.
+Benefits
+Early bug detection
+Faster development
+Automated testing
+Better code quality
+
+2. What is Continuous Delivery (CD)?
+
+Continuous Delivery ensures code is always ready for deployment through automated pipelines.
+
+3. What is Continuous Deployment?
+
+Continuous Deployment automatically deploys every successful change to production without manual approval.
+
+4. Why Use Jenkins?
+
+Advantages
+Open source
+Easy integration
+Large plugin ecosystem
+Automation support
+Distributed builds
+Pipeline as Code
+
+5. Explain Jenkins Architecture
+
+Developer
+   ↓
+Git Repository
+   ↓
+Jenkins Server
+   ↓
+Build/Test
+   ↓
+Deploy
+Components
+Jenkins Master/Controller
+Jenkins Agents/Nodes
+Build Executor
+Plugins
+Pipelines
+Jenkins Core Concepts
+
+6. What is Jenkins Pipeline?
+
+A Jenkins Pipeline is a suite of plugins that supports implementing CI/CD pipelines as code.
+
+7. Types of Jenkins Pipelines
+
+Type	                    Description
+Declarative Pipeline	    Simpler syntax
+Scripted Pipeline	        Groovy-based advanced scripting
+
+8. What is Jenkinsfile?
+
+A Jenkinsfile defines the Jenkins pipeline in code form.
+
+Example:
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building Application'
+            }
+        }
+    }
+}
+
+9. Explain Declarative Pipeline
+
+Simplified syntax introduced for readability and easier maintenance.
+
+Example
+pipeline {
+    agent any
+
+    stages {
+        stage('Test') {
+            steps {
+                echo 'Running Tests'
+            }
+        }
+    }
+}
+
+10. Explain Scripted Pipeline
+
+Uses Groovy scripting for complex logic.
+Example:
+
+node {
+    stage('Build') {
+        echo 'Building'
+    }
+}
+
+11. How to Install Jenkins?
+
+Steps
+Install Java
+Download Jenkins WAR/package
+Start Jenkins service
+Open browser on port 8080
+Configure plugins
+
+12. Default Jenkins Port
+
+8080
+
+13. How to Start Jenkins in Linux?
+
+sudo systemctl start jenkins
+
+14. Check Jenkins Status
+
+sudo systemctl status jenkins
+
+15. What is a Jenkins Job?
+
+A Jenkins Job is a task or automated process configured in Jenkins.
+
+16. Types of Jenkins Jobs
+
+Freestyle Project
+Pipeline Project
+Multibranch Pipeline
+Maven Project
+
+17. What is Freestyle Project?
+
+A flexible Jenkins job type used for simple build tasks.
+
+18. What is Multibranch Pipeline?
+
+Automatically creates pipelines for branches in source control.
+
+19. How Jenkins Integrates with Git?
+
+Git integration is done using:
+Git plugin
+Webhooks
+Poll SCM
+
+20. What is Webhook?
+
+A webhook automatically triggers Jenkins when code changes occur.
+
+21. Poll SCM vs Webhook
+
+Poll SCM	Webhook
+Jenkins checks periodically	Event-driven
+Resource consuming	Faster
+
+22. What is Build Trigger?
+
+Defines when Jenkins should start a build.
+Examples
+SCM changes
+Scheduled build
+Manual trigger
+Upstream project build
+
+23. What is Workspace in Jenkins?
+
+A directory where Jenkins stores build files and source code.
+
+24. What is Build Executor?
+
+An executor is a slot for running builds on a node.
+
+25. Difference Between Master and Agent
+
+Master/Controller	Agent/Node
+Controls Jenkins	Executes jobs
+Schedules builds	Runs tasks
+
+26. Explain Jenkins Pipeline Stages
+
+Example stages:
+Checkout
+Build
+Test
+Deploy
+
+27. What is agent any?
+
+agent any
+Allows Jenkins to run the pipeline on any available node.
+
+28. What is post Section in Jenkins?
+
+Used for actions after pipeline completion.
+
+Example:
+
+post {
+    always {
+        echo 'Pipeline Completed'
+    }
+}
+
+29. What is Environment Block?
+
+Defines environment variables.
+Example:
+environment {
+    APP_ENV = 'production'
+}
+
+30. What is Parallel Execution?
+
+Runs multiple stages simultaneously.
+Example:
+parallel {
+    stage('Test1') {
+        steps {
+            echo 'Test1'
+        }
+    }
+
+    stage('Test2') {
+        steps {
+            echo 'Test2'
+        }
+    }
+}
+
+31. What are Jenkins Plugins?
+
+Plugins extend Jenkins functionality.
+
+Popular Plugins
+Git Plugin
+Docker Plugin
+Maven Plugin
+Pipeline Plugin
+
+32. How to Install Plugins?
+
+Manage Jenkins
+Plugins
+Available Plugins
+Install
+
+33. Most Important Jenkins Plugins
+
+Plugin	Purpose
+Git Plugin	Git integration
+Blue Ocean	Modern UI
+Docker Plugin	Docker integration
+Pipeline Plugin	CI/CD pipelines
+
+34. How to Secure Jenkins?
+
+Best Practices
+Enable authentication
+Use HTTPS
+Role-based access control
+Backup Jenkins
+Restrict plugins
+
+35. What is Role-Based Authorization?
+
+Provides different access permissions to users.
+
+36. What is Credentials Management?
+
+Stores secrets securely:
+Passwords
+SSH keys
+API tokens
+
+37. Types of Jenkins Credentials
+
+Username/password
+Secret text
+SSH private key
+Secret file
+
+38. How Jenkins Integrates with Docker?
+
+Docker integration helps:
+Build images
+Run containers
+Deploy applications
+39. Example Docker Build in Jenkins
+stage('Docker Build') {
+    steps {
+        sh 'docker build -t myapp .'
+    }
+}
+
+40. What is Docker Agent in Jenkins?
+
+Allows running pipelines inside Docker containers.
+Example:
+agent {
+    docker {
+        image 'node:18'
+    }
+}
+
+41. Jenkins and Kubernetes Integration
+
+Kubernetes can dynamically create Jenkins agents.
+
+42. What is Jenkins Kubernetes Plugin?
+
+Creates temporary Kubernetes pods as Jenkins agents.
+
+43. What is Blue Ocean?
+
+Blue Ocean is a modern UI for Jenkins pipelines.
+
+44. What is Shared Library?
+
+Reusable pipeline code stored separately.
+
+45. Advantages of Shared Libraries
+
+Code reuse
+Easier maintenance
+Standardization
+
+46. Explain Jenkins Distributed Build
+
+Jobs run across multiple agents to improve scalability.
+
+47. What is Jenkins Node Label?
+
+Used to target specific agents.
+Example:
+agent {
+    label 'linux'
+}
+
+48. What is Fingerprinting in Jenkins?
+
+Tracks usage of files across builds.
+
+49. What is Artifact in Jenkins?
+
+Files generated during build:
+JAR
+WAR
+ZIP
+Reports
+
+50. Archive Artifacts Example
+
+archiveArtifacts artifacts: '*.jar'
+
+51. Jenkins Build Failed. How Will You Debug?
+
+Steps
+Check console logs
+Verify SCM access
+Check plugin issues
+Validate credentials
+Check disk space
+
+52. Jenkins is Slow. What Will You Do?
+
+Solutions
+Increase executors
+Clean workspace
+Remove unused plugins
+Scale agents
+Optimize pipelines
+
+53. How to Backup Jenkins?
+
+Backup:
+Jenkins Home directory
+Job configs
+Plugins
+Credentials
+
+54. Location of Jenkins Home Directory
+
+Linux:
+/var/lib/jenkins
+
+55. Explain Complete CI/CD Workflow
+
+Developer Pushes Code
+        ↓
+Git Trigger
+        ↓
+Jenkins Pipeline
+        ↓
+Build
+        ↓
+Test
+        ↓
+Docker Build
+        ↓
+Deploy
+
+56. What is Continuous Testing?
+
+Automatically testing application during CI/CD process.
+
+57. What is Pipeline as Code?
+
+Defining CI/CD pipelines using code stored in version control.
+
+58. How Do You Deploy to Multiple Environments?
+
+Using:
+
+Parameters
+Separate stages
+Environment variables
+
+59. How Do You Handle Secrets in Jenkins?
+
+Using Jenkins Credentials Store.
+Never hardcode secrets.
+
+60. How Do You Roll Back Deployment?
+
+Methods:
+Previous artifact deployment
+Kubernetes rollback
+Docker image rollback
+
+61. How Do You Trigger Downstream Jobs?
+
+build job: 'DeployJob'
+
+62. How Do You Schedule Jenkins Jobs?
+
+Using CRON syntax.
+Example:
+H/15 * * * *
+Runs every 15 minutes.
+Jenkinsfile Full Example
+pipeline {
+    agent any
+
+    environment {
+        APP_ENV = 'dev'
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/user/repo.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'mvn clean install'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying Application'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline Successful'
+        }
+
+        failure {
+            echo 'Pipeline Failed'
+        }
+    }
+}
+
+63. Jenkins vs GitHub Actions
+
+Jenkins	                GitHub Actions
+Self-hosted possible	GitHub integrated
+Large plugin ecosystem	Easier GitHub setup
+
+64. Jenkins vs GitLab CI
+Jenkins	             GitLab CI
+More customizable	 Better GitLab integration
+
+65. Jenkins is Written in Which Language?
+
+Java
+
+66. Jenkins Configuration File
+
+config.xml
+
+67. Restart Jenkins Command
+
+sudo systemctl restart jenkins
+
+68. Safe Restart in Jenkins
+
+Waits for running jobs to complete before restart.
+
+69. Disable Jenkins Job
+
+Temporarily stops execution of a job.
+
+70. What is Quiet Down Mode?
+
+Stops new builds while allowing current builds to finish.
+
+71. Explain Your Jenkins Project
+
+Example Answer:
+
+Source code in GitHub
+Jenkins pipeline triggered via webhook
+Maven build
+SonarQube scan
+Docker image creation
+Deployment to Kubernetes
+
+72. How Do You Integrate SonarQube with Jenkins?
+
+SonarQube integration:
+Install SonarQube plugin
+Configure server
+Add scan stage in pipeline
+
+73. Example SonarQube Stage
+
+stage('SonarQube') {
+    steps {
+        sh 'mvn sonar:sonar'
+    }
+}
+
+74. How Do You Send Notifications in Jenkins?
+
+Using:
+Email
+Slack
+Microsoft Teams
+
+75. Example Email Notification
+
+post {
+    failure {
+        mail to: 'team@example.com',
+        subject: 'Build Failed',
+        body: 'Check Jenkins'
+    }
+}
+
+Jenkins Commands Cheat Sheet
+systemctl start jenkins
+systemctl stop jenkins
+systemctl restart jenkins
+systemctl status jenkins

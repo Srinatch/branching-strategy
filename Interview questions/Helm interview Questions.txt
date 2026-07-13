@@ -1,0 +1,355 @@
+Helm Interview Questions and Answers (Complete Guide)
+-----------------------------------------------------
+1. What is Helm?
+-----------------------------------------------------
+Helm is the package manager for Kubernetes. It simplifies deploying and managing Kubernetes applications using reusable packages called Charts.
+
+Benefits
+Simplifies deployments
+Version control for applications
+Rollback support
+Reusable templates
+Easy upgrades
+
+2. What is a Helm Chart?
+-----------------------------------------------------
+A Helm Chart is a package containing Kubernetes manifests and metadata required to deploy an application.
+
+Example:
+nginx-chart/
+├── Chart.yaml
+├── values.yaml
+├── charts/
+└── templates/
+
+3. What are the Components of a Helm Chart?
+-----------------------------------------------------
+Chart.yaml
+values.yaml
+templates/
+charts/
+helpers.tpl
+
+4. What is Chart.yaml?
+-----------------------------------------------------
+Contains metadata about the chart.
+
+Example:
+apiVersion: v2
+name: nginx-chart
+version: 1.0.0
+appVersion: "1.25"
+
+5. What is values.yaml?
+-----------------------------------------------------
+Contains configurable values used by templates.
+
+Example:
+replicaCount: 2
+image:
+  repository: nginx
+  tag: latest
+  
+6. What is the templates Directory?
+-----------------------------------------------------
+Contains Kubernetes manifest templates.
+
+Example:
+templates/
+├── deployment.yaml
+├── service.yaml
+├── ingress.yaml
+
+7. How to Install Helm?
+-----------------------------------------------------
+Linux:
+
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+Verify:
+helm version
+
+8. How to Add a Repository?
+-----------------------------------------------------
+helm repo add bitnami https://charts.bitnami.com/bitnami
+
+9. Update Helm Repositories
+-----------------------------------------------------
+helm repo update
+
+10. Search Charts
+-----------------------------------------------------
+helm search repo nginx
+
+11. Install a Chart
+-----------------------------------------------------
+helm install my-nginx bitnami/nginx
+
+12. List Installed Releases
+-----------------------------------------------------
+helm list
+
+13. Upgrade a Release
+-----------------------------------------------------
+helm upgrade my-nginx bitnami/nginx
+
+14. Uninstall a Release
+-----------------------------------------------------
+helm uninstall my-nginx
+
+15. View Release History
+-----------------------------------------------------
+helm history my-nginx
+
+16. Rollback a Release
+-----------------------------------------------------
+helm rollback my-nginx 1
+
+17. What is a Release?
+-----------------------------------------------------
+A release is an instance of a chart running in Kubernetes.
+
+Example:
+Chart → Release
+nginx → my-nginx
+
+18. What is a Repository?
+-----------------------------------------------------
+Stores Helm charts.
+Examples:
+Bitnami
+Artifact Hub
+
+19. What is Artifact Hub?
+-----------------------------------------------------
+Central repository for Helm charts and Kubernetes packages.
+
+20. Helm 2 vs Helm 3
+-----------------------------------------------------
+Helm 2							Helm 3
+Uses Tiller						No Tiller
+Less secure						More secure
+Server component required		Client only
+
+21. Override Values During Installation
+-----------------------------------------------------
+helm install myapp . --set replicaCount=3
+
+22. Use Custom Values File
+-----------------------------------------------------
+helm install myapp . -f custom-values.yaml
+
+23. Multiple Values Files
+-----------------------------------------------------
+helm install myapp . \
+-f values.yaml \
+-f prod-values.yaml
+
+24. What is Templating in Helm?
+-----------------------------------------------------
+Generates Kubernetes YAML dynamically.
+
+Example:
+replicas: {{ .Values.replicaCount }}
+
+25. Access Values in Templates
+-----------------------------------------------------
+{{ .Values.image.repository }}
+
+26. What are Built-In Objects?
+-----------------------------------------------------
+.Values
+.Release
+.Chart
+.Files
+.Capabilities
+
+27. Example Using Release Name
+-----------------------------------------------------
+name: {{ .Release.Name }}
+
+28. What is _helpers.tpl?
+-----------------------------------------------------
+Contains reusable template functions.
+
+Example:
+{{ define "myapp.name" }}
+myapp
+{{ end }}
+
+29. Include Helper Template
+-----------------------------------------------------
+{{ include "myapp.name" . }}
+
+30. Create New Chart
+-----------------------------------------------------
+helm create mychart
+
+31. Package Chart
+-----------------------------------------------------
+helm package mychart
+
+32. Verify Chart Syntax
+-----------------------------------------------------
+helm lint mychart
+
+33. Render Templates Without Deployment
+-----------------------------------------------------
+helm template mychart
+
+34. Dry Run Installation
+-----------------------------------------------------
+helm install myapp . --dry-run
+
+35. What are Dependencies?
+-----------------------------------------------------
+One chart can use other charts.
+
+Example:
+dependencies:
+- name: mysql
+  version: 9.4.1
+  repository: https://charts.bitnami.com/bitnami
+
+36. Download Dependencies
+-----------------------------------------------------
+helm dependency update
+
+37. Install in Namespace
+-----------------------------------------------------
+helm install myapp . -n dev
+
+Create namespace automatically:
+helm install myapp . -n dev --create-namespace
+
+38. How Does Helm Store Release Information?
+-----------------------------------------------------
+Helm 3 stores release metadata in Kubernetes Secrets.
+
+39. View Release Secrets
+-----------------------------------------------------
+kubectl get secrets
+
+40. What are Helm Hooks?
+-----------------------------------------------------
+Execute tasks during chart lifecycle.
+
+Examples:
+pre-install
+post-install
+pre-upgrade
+post-upgrade
+
+41. Example Hook
+-----------------------------------------------------
+annotations:
+  "helm.sh/hook": pre-install
+
+42. Run Chart Tests
+-----------------------------------------------------
+helm test myapp
+
+43. Does Helm Support OCI Registries?
+-----------------------------------------------------
+Yes.
+
+Example:
+helm push mychart.tgz oci://registry.example.com
+
+44. How Do You Secure Secrets in Helm?
+-----------------------------------------------------
+Using:
+Kubernetes Secrets
+Sealed Secrets
+External Secrets Operator
+Vault
+
+45. Can Helm Encrypt Values?
+-----------------------------------------------------
+Not directly.
+
+Tools:
+helm-secrets
+SOPS
+
+46. Release Failed. What Will You Check?
+-----------------------------------------------------
+helm status myapp
+
+Check:
+Events
+Pods
+Logs
+
+47. Template Errors. What Command Helps?
+-----------------------------------------------------
+helm template .
+or
+helm lint .
+
+48. How to Debug Installations?
+-----------------------------------------------------
+helm install myapp . --debug --dry-run
+
+49. Explain Your Helm Project
+-----------------------------------------------------
+Example Answer:
+
+"We packaged Kubernetes applications using Helm charts. Environment-specific configurations were managed through values files. CI/CD pipelines deployed applications using Helm upgrade, and rollback was used during failures."
+
+50. How Do You Deploy Multiple Environments?
+-----------------------------------------------------
+Structure:
+values.yaml
+dev-values.yaml
+qa-values.yaml
+prod-values.yaml
+
+Deploy:
+helm install app . -f prod-values.yaml
+
+51. What is helm upgrade --install?
+-----------------------------------------------------
+Installs if absent, otherwise upgrades.
+helm upgrade --install myapp .
+
+52. What is helm get values?
+-----------------------------------------------------
+Displays values used by a release.
+helm get values myapp
+
+53. What is helm get manifest?
+-----------------------------------------------------
+Shows deployed manifests.
+helm get manifest myapp
+
+54. What is helm get all?
+-----------------------------------------------------
+Displays complete release information.
+helm get all myapp
+
+55. What is helm repo list?
+-----------------------------------------------------
+Lists repositories.
+helm repo list
+
+Frequently Asked Rapid-Fire Questions
+-----------------------------------------------------
+Create Chart
+helm create mychart
+Install Chart
+helm install app .
+Upgrade Chart
+helm upgrade app .
+Rollback Release
+helm rollback app 1
+Verify Chart
+helm lint .
+Render Templates
+helm template .
+Test Release
+helm test app
+List Releases
+helm list
+Remove Release
+helm uninstall app

@@ -1,0 +1,139 @@
+docker networking commands
+--------------------------------------
+
+create ec2 instance using script 
+in the script installed docker
+
+docker container run -d --name d1 alpine sleep 10000
+docker container run -d --name d2 alpine sleep 10000
+
+docker container inspect d1
+
+docker container exec -it d1 /bin/sh
+ping d2
+ping 98.93.123.215 d2
+docker network ls
+docker network inspect bridge
+docker swarm init --advertise-addr 172.17.0.2
+docker network ls
+
+multi stage build
+------------------------------------------------
+
+create aws instance with docker installed
+
+git clone https://github.com/spring-projects/spring-petclinic.git
+
+cd spring-petclinic
+vi dockerfile
+
+FROM maven:3.9.6-eclipse-temurin-17 AS build
+WORKDIR /build
+COPY . .
+RUN mvn clean package -DskipTests -Dcheckstyle.skip=true
+
+FROM amazoncorretto:17-alpine
+WORKDIR /app
+COPY --from=build /build/target/*.jar app.jar
+EXPOSE 8080
+CMD ["java", "-jar", "app.jar"]
+
+
+docker image build -t spc:1.0 .
+
+docker container run -it --name spctrail -P spc:1.0
+docker stats
+docker container ls
+docker image ls
+
+# install trivy in ubuntu
+sudo apt-get install wget gnupg
+wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
+echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb generic main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
+sudo apt-get update
+sudo apt-get install trivy
+
+trivy image spc:1.0
+docker container run -it --name tbd amazoncorretto:17-alpine-jdk
+addgroup lt
+adduser -s /bin/sh -D lta
+
+mkdir javabase
+cd javabase
+vi dockerfile
+
+FROM amazoncorretto:17-alpine-jdk
+RUN adduser -D -s /bin/sh lt
+USER lt
+
+docker build -t ltjava:17 .
+docker images | grep ltjava
+trivy image ltjava:17
+
+docker image prune
+
+
+practice-2
+---------------------
+
+mkdir jenkins
+cd jenkins
+vi dockerfile
+
+FROM jenkins/jenkins:lts
+ENV JAVA_OPTS="-Djenkins.install.runSetupWizard=false"
+USER root
+RUN apt-get update && \
+    apt-get install -y sudo git curl docker.io && \
+    rm -rf /var/lib/apt/lists/*
+USER jenkins
+EXPOSE 8080
+CMD ["jenkins.sh"]
+
+
+
+FROM jenkins/jenkins:lts
+ENV JAVA_OPTS="-Djenkins.install.runSetupWizard=false"
+USER root
+RUN apt-get update && \
+    apt-get install -y \
+        openjdk-21-jre \
+        docker.io \
+        git \
+        curl \
+        sudo \
+    && rm -rf /var/lib/apt/lists/*
+
+ENV JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+ENV PATH=$JAVA_HOME/bin:$PATH
+USER jenkins
+EXPOSE 8080
+CMD ["jenkins.sh"]
+
+docker image build -t jenkins:1.0 .
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------------------------
+docker registries
+--------------------------------------------------------------
+
+create docker hub repository 
+
+check docker login
+
+docker image tag spc:1.0 awsdevopssri/spcjan2026-1.0
+docker image ls
+docker image push awsdevopssri/spcjan2026-1.0
+
